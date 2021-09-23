@@ -1,0 +1,29 @@
+{
+  "target":{
+     "countryCode":"IN",
+     "vehicleType":"BIKE"
+  },
+  "customerPickupEnabled":false,
+  "customerDeliveryEnabled":false,
+  "contactNumberLength": 10,
+  "listOfSupportedBulkUploadType": ["make","model","variant","inventory","post_purchase","post_refurb"],
+  "enabledGstnInput": true,
+  "listingPriceRule":{
+     "updateEnabled":true
+  },
+  "locationZoneEnabled":false,
+  "movementRule":[
+     {
+        "inventoryStatus":[
+           "BOUGHT",
+           "STOCK_IN",
+           "STOCK_OUT"
+        ],
+        "logisticProvider":[
+           "OFFLINE",
+           "LOCUS",
+           "DRIVEU"
+        ]
+     }
+  ]
+}
