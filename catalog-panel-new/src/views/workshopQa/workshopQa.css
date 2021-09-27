@@ -1,0 +1,17 @@
+.search-box>input{
+    outline: none;
+    border: 2px solid #F6F6F6;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.search-box{
+    margin: 5px auto;
+    margin-bottom: 10px;
+}
+
+.search-box>input::placeholder{
+    color:grey
+}

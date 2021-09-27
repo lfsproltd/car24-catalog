@@ -4,14 +4,14 @@ import loaderImg from "../../assets/img/loader.png";
 import AlertBox from "./../../common/showAlert";
 import { setToasterMessage } from "../../store/actions/commonAction/common.action";
 import { getUserToken } from "../../utils/utils";
-import EstimateListingComponent from "./estimateListingComponent";
+import WorkorderListingComponent from "./workorderListingComponent";
 import {
-  getEstimatesListing,
-  getEstimatesListingCount,
+  getWorkorderListing,
+  getWorkorderListingCount,
   searchAppointment,
 } from "./../../store/actions/workshopQaManagement/workshopQaManagement.action";
 
-class EstimateListingContainer extends Component {
+class WorkorderListingContainer extends Component {
   constructor(props) {
     super(props);
   }
@@ -23,8 +23,8 @@ class EstimateListingContainer extends Component {
       user.accessToken.claims &&
       user.accessToken.claims.locations &&
       user.accessToken.claims.locations.toString();
-    this.props.getEstimatesListing({}, locationCode);
-    this.props.getEstimatesListingCount("", locationCode);
+    this.props.getWorkorderListing({}, locationCode);
+    this.props.getWorkorderListingCount("", locationCode);
   }
 
   render() {
@@ -43,14 +43,14 @@ class EstimateListingContainer extends Component {
             <img src={loaderImg} alt="loader" />
           </div>
         )}
-        <EstimateListingComponent
+        <WorkorderListingComponent
           estimatesListing={this.props.estimatesListing}
-          getEstimatesListing={getEstimatesListing}
+          getEstimatesListing={getWorkorderListing}
           toasterType={this.props.toasterType}
           toasterMessage={this.props.toasterMessage}
           showToaster={this.props.showToaster}
           qaListingCount={this.props.qaListingCount}
-          getEstimatesListingCount={getEstimatesListingCount}
+          getEstimatesListingCount={getWorkorderListingCount}
           searchAppointmentId={searchAppointment}
         />
       </div>
@@ -70,12 +70,12 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = {
   setToasterMessage,
-  getEstimatesListing,
-  getEstimatesListingCount,
+  getWorkorderListing,
+  getWorkorderListingCount,
   searchAppointment,
 };
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(EstimateListingContainer);
+)(WorkorderListingContainer);

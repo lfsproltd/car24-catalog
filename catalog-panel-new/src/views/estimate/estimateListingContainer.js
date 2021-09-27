@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import loaderImg from "../../assets/img/loader.png";
-import AlertBox from "./../../common/showAlert";
+// import AlertBox from "./../../common/showAlert";
 import { setToasterMessage } from "../../store/actions/commonAction/common.action";
-import { getUserToken } from "../../utils/utils";
 import EstimateListingComponent from "./estimateListingComponent";
 import {
   getEstimatesListing,
@@ -30,17 +29,17 @@ class EstimateListingContainer extends Component {
   render() {
     return (
       <div>
-        {this.props.showToaster && (
-          <AlertBox
-            ShowAlert={this.props.showToaster}
-            message={this.props.toasterMessage}
-            closeToaster={this.closeToaster}
-            type={this.props.toasterType}
-          />
-        )}
+        {/* {this.props.showToaster && (
+        //   <AlertBox
+        //     ShowAlert={this.props.showToaster}
+        //     message={this.props.toasterMessage}
+        //     closeToaster={this.closeToaster}
+        //     type={this.props.toasterType}
+        //   />
+        )} */}
         {this.props.isProcessing && (
           <div className="loaderSection">
-            <img src={loaderImg} alt="loader" />
+            {/* <img src={loaderImg} alt="loader" /> */}
           </div>
         )}
         <EstimateListingComponent

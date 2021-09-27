@@ -1,0 +1,192 @@
+.summaryList {
+    padding: 14px;
+}
+.titleWrapperMain {
+    display: flex;
+    align-items: center;
+}
+.summaryList h2 {
+    font-weight: bold;
+    font-size: 20px;
+    line-height: 30px;
+    color: #2B57AD;
+    position: relative;
+    padding-left: 16px;
+    margin: 0;
+}
+.summaryList h2::before {
+    content: '';
+    border-left: 8px solid #5F80C0;
+    height: 24px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+}
+.count {
+    width: 36px;
+    height: 36px;
+    background: rgba(43, 87, 173, 0.1);
+    border-radius: 100%;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 27px;
+    color: #2B57AD;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 20px;
+}
+.tagSection {
+    height: 83px;
+    background: #FFFFFF;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    margin: 20px 0;
+}
+.tagSection p {
+    margin: 0 10px 0 0px;
+    padding: 0;
+}
+.infoText {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 24px;
+    color: #D03636;
+    padding-left: 20px;
+}
+.tagsction {
+    display: flex;
+}
+.countCardGreen, .countCardYellow, .countCardRed{
+    width: 60px;
+    height: 32px;
+    text-align: center;
+}
+.countCardGreen p, .countCardYellow p, .countCardRed p {
+    background: #00AA00;
+    border-radius: 6px;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+}
+.countCardYellow p {
+    background: #F5AB35;
+}
+.countCardRed p {
+    background: #D03636;
+}
+.countCardGreen span, .countCardYellow span, .countCardRed span {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 24px;
+    color: #465166;
+}
+.countcard  {
+    display: flex;
+}
+.countcard .countCardGreen, .countcard .countCardYellow {
+     margin-right: 10px;
+}
+.cardmainWrapper {
+    background: #FFFFFF;
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    padding: 10px;
+}
+.cardRow {
+    display: flex;
+    border-bottom: 1px dashed #898989;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+.cardRow:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+.cardRowDetails {
+    margin-left: 11px;
+    width: 100%;
+}
+.cardRowDetails h3 {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 24px;
+    color: #000000;
+}
+.imperfection {
+    width: 50%;
+}
+.imperfection h4 {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: #898989;
+}
+.imperfection ul {
+    margin: 0;
+    padding: 0;
+}
+.imperfection ul li {
+    list-style: none;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    color: #393939;
+    position: relative;
+    display: inline-block;
+    padding-right: 20px;
+}
+.imperfection ul li::after {
+    content: '|';
+    position: absolute;
+    top: 0;
+    right: 10px;
+    bottom: 0;
+    margin: auto;
+}
+.imperfectionWrapper {
+    display: flex;
+}
+.imperfectionWrapper .imperfection:last-child {
+    border-left: 1px solid #E9E9E9;
+    padding-left: 40px;
+}
+.detailsHeading {
+    display: flex;
+    justify-content: space-between;
+}
+.cardRowDetails .greyLabel, .cardRowDetails .greenLabel, .cardRowDetails .yellowLabel, .cardRowDetails .redLabel {
+    margin: 0;
+    padding: 0;
+}
+.tabsSliderWrapper {
+    width: 290px;
+    height: 225px;
+}
+.tabsSliderWrapper .slick-prev:before,  .tabsSliderWrapper .slick-next:before {
+    color: #007dc5 !important;
+    font-size: 34px !important;
+}
+.tabsSliderWrapper .slick-next {
+    right: 22px !important;
+}
+.tabsSliderWrapper  .slick-prev {
+    left: 10px !important;
+}
+.tabsSliderWrapper .slick-slider {
+    width: 290px;
+    height: 225px;
+}
+.tabsSliderWrapper .imageWrap {
+    width: 290px;
+    height: 225px;
+}
+.tabsSliderWrapper .imageWrap img {
+    width: 100%;
+}

@@ -1,0 +1,42 @@
+:global .ReactModal__Overlay {
+    background: rgba(0, 11, 35, 0.95) !important;
+    opacity: 1;
+    z-index: 9;
+}
+:global .ReactModal__Content {
+    margin-right: 0 !important;
+    border-radius: 10px !important;
+    padding: 35px 50px !important;
+    min-width: 350px;
+    border:1px solid #000;
+}
+/* .popupWrapper .checkinText{
+    padding-top: 11px;
+}
+.popupWrapper .txt {
+    font-size: 12px;
+    letter-spacing: 0.5px;
+    color: #2e384d;
+    margin: 0;
+    padding-bottom: 8px;
+}
+.checkbox {
+    font-size: 14px;
+    color: #2e384d;
+    margin-top: 24px;   
+}
+.checkinForm {
+    margin-top: 23px;
+}
+.ctaButton {
+    display: flex;
+    justify-content: space-around;
+} */
+.closeModal {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    border: 0;
+    background: none;
+    cursor: pointer;
+}
