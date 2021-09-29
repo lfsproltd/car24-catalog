@@ -8,11 +8,7 @@ class AccountContainer extends Component {
   }
 
   render() {
-    return (
-      <div>
-        <AccountComponent />
-      </div>
-    );
+    return <AccountComponent />;
   }
 }
 

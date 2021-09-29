@@ -38,6 +38,6 @@ export default class OktaSignInWidget extends Component {
   }
 
   render() {
-    return <div ref={this.wrapper} />;
+    return <div id="hello" style={{}} ref={this.wrapper} />;
   }
 }

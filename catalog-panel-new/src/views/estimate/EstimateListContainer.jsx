@@ -8,7 +8,7 @@ import {
 } from "../../store/actions/estimateActions";
 
 const EstimateListContainer = (props) => {
-  const { estimateProps = {}, GetEstimatesListAction } = props;
+  const { estimateProps = {}, GetEstimatesListAction, lang } = props;
   const { estimateList = [] } = estimateProps;
   useEffect((_) => {
     let user = JSON.parse(localStorage.getItem("okta-token-storage"));
@@ -17,7 +17,7 @@ const EstimateListContainer = (props) => {
   }, []);
   return (
     <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
-      <EstimateListComponent listData={estimateList} />
+      <EstimateListComponent lang={lang} listData={estimateList} />
     </div>
   );
 };

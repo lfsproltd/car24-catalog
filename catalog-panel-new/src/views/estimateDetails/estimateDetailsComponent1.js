@@ -599,10 +599,10 @@ const EstimateDetailsComponent = (props) => {
 
   const editRefurbChoice = (item, event, choice, index) => {
     let obj = {};
-    obj = { ...refurbishmentChoices };
-    if (refurbishmentChoices && refurbishmentChoices[item]) {
-      obj[item][index].refurbishment = event.target.value;
-    }
+    // obj = { ...refurbishmentChoices };
+    // if (refurbishmentChoices && refurbishmentChoices[item]) {
+    //   obj[item][index].refurbishment = event.target.value;
+    // }
     setRefurbishmentChoices({ ...obj });
   };
 

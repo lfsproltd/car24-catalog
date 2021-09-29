@@ -110,8 +110,6 @@ const EstimateDetailsComponent = (props) => {
     }
   }, [estimateDetails]);
 
-  console.log("sssssss", estimateDetails);
-
   return (
     <div className="wrapper">
       <Link to="/estimate">BACK</Link>
@@ -169,18 +167,25 @@ const EstimateDetailsComponent = (props) => {
           </div>
         </div>
         {/* photo section here -  */}
-        {data && data.qualityChecks
-          ? Object.keys(data.qualityChecks).map((item, index) => (
-              <EstimateDetailsForm
-                key={index + "key"}
-                estimateDetails={estimateDetails}
-                data={data}
-                rowIndex={index}
-                item={item}
-                SetEstimateFormDataAction={SetEstimateFormDataAction}
-                masterData={masterData}
-              />
-            ))
+        {data?.qualityChecks
+          ? Object.keys(data.qualityChecks).map((item, index) => {
+              if (
+                data.qualityChecks[item]?.invalidated === false &&
+                data.checkpoints[item]?.ok === false
+              ) {
+                return (
+                  <EstimateDetailsForm
+                    key={index + "key"}
+                    estimateDetails={estimateDetails}
+                    data={data}
+                    rowIndex={index}
+                    item={item}
+                    SetEstimateFormDataAction={SetEstimateFormDataAction}
+                    masterData={masterData}
+                  />
+                );
+              }
+            })
           : null}
       </Paper>
     </div>

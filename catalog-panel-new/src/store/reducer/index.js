@@ -5,6 +5,7 @@ import estimateReducer from "./estimateReducer";
 import WorkshopManagement from "./workshopReducer";
 import loadingReducer from "./loadingReducer";
 import estimateDetailsReducer from "./estimateDetailsReducer";
+import languageReducer from "./languageReducer";
 
 export default combineReducers({
   form: formReducer,
@@ -13,4 +14,5 @@ export default combineReducers({
   estimateReducer,
   loadingReducer,
   estimateDetailsReducer,
+  languageReducer,
 });

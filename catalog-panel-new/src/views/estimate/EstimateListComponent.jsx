@@ -41,33 +41,6 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-const headCells = [
-  {
-    id: "appointmentId",
-    numeric: false,
-    disablePadding: false,
-    label: "App. Id",
-  },
-  {
-    id: "make",
-    numeric: true,
-    disablePadding: false,
-    label: "Make/Model",
-  },
-  {
-    id: "createdAt",
-    numeric: true,
-    disablePadding: false,
-    label: "Inspection Time",
-  },
-  {
-    id: "loc",
-    numeric: true,
-    disablePadding: false,
-    label: "Workshop Name",
-  },
-];
-
 function EnhancedTableHead(props) {
   const { order, orderBy, onRequestSort, headCells } = props;
   const createSortHandler = (property) => (event) => {
@@ -112,9 +85,35 @@ EnhancedTableHead.propTypes = {
 };
 
 export default function EstimateListComponent(props) {
-  const { listData = [] } = props;
+  const { listData = [], lang } = props;
 
-  const rows = [];
+  const rows = [],
+    headCells = [
+      {
+        id: "appointmentId",
+        numeric: false,
+        disablePadding: false,
+        label: lang.estimatePage["APP_ID"],
+      },
+      {
+        id: "make",
+        numeric: true,
+        disablePadding: false,
+        label: lang.estimatePage["MAKE_MODEL"],
+      },
+      {
+        id: "createdAt",
+        numeric: true,
+        disablePadding: false,
+        label: lang.estimatePage["INSPECTION_TIME"],
+      },
+      {
+        id: "loc",
+        numeric: true,
+        disablePadding: false,
+        label: lang.estimatePage["WORKSHOP_NAME"],
+      },
+    ];
 
   for (let i = 0; i < listData.length; i++) {
     const { appointmentId, make, model, createdAt, loc, version } = listData[i];

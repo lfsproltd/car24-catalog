@@ -12,12 +12,122 @@ export default function EstimateDetailsForm(props) {
     SetEstimateFormDataAction,
     masterData,
   } = props;
-
-  const [isEdit, setIsEdit] = useState(-1);
+  const [isEdit, setIsEdit] = useState(false);
+  const [otherWorkToBeDoneFieldValue, setOtherWorkToBeDoneFieldValue] =
+    useState("");
+  const [estimatesFieldsInitial, setEstimatesFieldsInitial] = useState({});
   const [possibleOptions, setPossibleOptions] = useState({});
 
-  const onEditClick = (editIndex) => {
-    setIsEdit(editIndex);
+  const onEditClick = () => {
+    setIsEdit(true);
+    let possibleData = {},
+      availableData = {},
+      filteredData = {},
+      estimateFields = {};
+
+    if (estimateDetails && estimateDetails[0]) {
+      Object.keys(estimateDetails[0].data.qualityChecks).forEach(
+        (item, index) => {
+          if (
+            estimateDetails[0]?.data?.qualityChecks[item]?.invalidated ===
+              false &&
+            estimateDetails[0].data.checkpoints[item]?.ok === false
+          ) {
+            if (
+              estimateDetails[0]?.data?.estimates[item]?.invalidated === false
+            ) {
+              estimateFields[item] = {
+                labourCost:
+                  estimateDetails[0].data.estimates[item].labourCost >= 0
+                    ? estimateDetails[0].data.estimates[item].labourCost
+                    : null,
+                parts: estimateDetails[0].data.estimates[item].parts
+                  ? estimateDetails[0].data.estimates[item].parts
+                  : [{ name: "", cost: null }],
+              };
+              if (
+                !estimateDetails[0]?.data?.checkpoints[item]
+                  ?.refurbishmentChoices
+              ) {
+                estimateFields[item] = {
+                  labourCost: null,
+                  parts: [{ name: "", cost: null }],
+                };
+              }
+            }
+          }
+        }
+      );
+    }
+    if (estimateFields?.[item]?.parts?.length === 0) {
+      estimateFields[item].parts = [
+        {
+          name: estimateFields[item]?.parts[0]?.name
+            ? estimateFields[item]?.parts[0]?.name
+            : "",
+          cost: estimateFields[item]?.parts[0]?.cost
+            ? estimateFields[item]?.parts[0]?.cost
+            : null,
+        },
+      ];
+    }
+    if (masterData?.checkpoints) {
+      masterData.checkpoints.forEach((checkpoint) => {
+        if (checkpoint.key === item) {
+          if (checkpoint?.refurbishment?.choices) {
+            possibleData[item] = {
+              refurbishmentChoices: [],
+            };
+            checkpoint.refurbishment.choices.forEach((name) => {
+              possibleData[item].refurbishmentChoices.push({
+                other: false,
+                refurbishment: name,
+                checked: false,
+              });
+            });
+          }
+        }
+        possibleData = { ...possibleData };
+      });
+    }
+    if (data?.checkpoints[item]?.refurbishmentChoices) {
+      availableData[item] = {
+        refurbishmentChoices: [],
+      };
+      data.checkpoints[item].refurbishmentChoices.forEach((_choice) => {
+        data.checkpoints[item].refurbishmentChoices.forEach((_choice) => {
+          if (_choice?.other === true) {
+            setOtherWorkToBeDoneFieldValue(_choice.refurbishment);
+          }
+        });
+        availableData[item].refurbishmentChoices.push({
+          other: _choice.other,
+          refurbishment: _choice.refurbishment,
+          checked: true,
+        });
+      });
+
+      if (
+        possibleData[item]?.refurbishmentChoices &&
+        availableData[item]?.refurbishmentChoices
+      ) {
+        filteredData[item] = {
+          refurbishmentChoices: [],
+        };
+        let combinedData = [
+          ...possibleData[item].refurbishmentChoices,
+          ...availableData[item].refurbishmentChoices,
+        ];
+        filteredData[item].refurbishmentChoices = [
+          ...combinedData
+            .reduce((map, obj) => map.set(obj.refurbishment, obj), new Map())
+            .values(),
+        ];
+        possibleData = filteredData;
+      }
+    }
+    setEstimatesFieldsInitial({ ...estimateFields });
+    setPossibleOptions({ ...possibleData });
   };
 
   return (
@@ -57,41 +167,84 @@ export default function EstimateDetailsForm(props) {
                 </div>
               )}
             {/* work to be done */}
-            {isEdit !== rowIndex ? (
-              <>
-                {data?.checkpoints[item]?.refurbishmentChoices.length && (
-                  <div className="col-lg-12 light-label dark-span">
-                    <h6 className="work-to-done">Work to be done</h6>
+            {!isEdit ? (
+              data?.checkpoints[item]?.refurbishmentChoices.length && (
+                <div className="col-lg-12 light-label dark-span">
+                  <h6 className="work-to-done">Work to be done</h6>
+                  <div className="work-to-be-done-list">
                     {data?.checkpoints[item]?.refurbishmentChoices?.map(
                       (choice, index2) => {
                         return (
-                          choice &&
-                          choice.refurbishment && (
-                            <>
-                              <span>
-                                {index2 + 1 + ". " + choice.refurbishment + " "}
-                              </span>
-                              <br />
-                            </>
+                          choice?.refurbishment && (
+                            <span>
+                              {`${index2 + 1}. ${choice.refurbishment}`}
+                            </span>
                           )
                         );
                       }
                     )}
                   </div>
+                </div>
+              )
+            ) : (
+              <div className="edit-fields">
+                {possibleOptions[item]?.refurbishmentChoices?.map(
+                  (option, ind) => {
+                    return option?.other === false ? (
+                      <div>
+                        <input
+                          type="checkbox"
+                          name={option.refurbishment}
+                          checked={option.checked}
+                          onClick={
+                            (e) => {}
+                            // editWorkToBeDone(item, option, ind, e.target)
+                          }
+                        />
+                        <span>{" " + option.refurbishment}</span>
+                      </div>
+                    ) : null;
+                  }
                 )}
-              </>
-            ) : null}
+                <span>Other: </span>
+                <input
+                  className="form-control"
+                  type="textbox"
+                  name="otherWorkToBeDoneField"
+                  value={otherWorkToBeDoneFieldValue}
+                  onChange={(e) =>
+                    setOtherWorkToBeDoneFieldValue(e.target.value)
+                  }
+                />
+              </div>
+            )}
+            <h6 className="work-to-done">Estimated labour cost</h6>
+            <input
+              type="text"
+              className="form-control"
+              name={item}
+              value={
+                estimatesFieldsInitial[item]?.labourCost >= 0
+                  ? estimatesFieldsInitial[item]?.labourCost
+                  : ""
+              }
+              onChange={(e) => {}}
+              disabled={
+                !isEdit ||
+                estimateDetails?.data?.qualityChecks[item].status === "APPROVED"
+              }
+            />
           </div>
         </div>
         <div className="action-buttons">
           <Button
             onClick={(_) => {
-              onEditClick(rowIndex);
+              !isEdit ? onEditClick() : setIsEdit(false);
             }}
             className="edit-button"
             variant="contained"
           >
-            EDIT
+            {isEdit ? "CANCEL" : "EDIT"}
           </Button>
         </div>
       </div>

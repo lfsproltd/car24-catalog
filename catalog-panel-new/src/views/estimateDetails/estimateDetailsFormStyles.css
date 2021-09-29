@@ -48,3 +48,13 @@
 .action-buttons{
     margin-top: 10px;
 }
+
+.work-to-be-done-list{
+display: flex;
+flex-direction: column;
+}
+
+.edit-fields{
+display: flex;
+flex-direction: column;
+}
