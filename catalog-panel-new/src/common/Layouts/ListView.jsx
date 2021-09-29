@@ -6,7 +6,6 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import { Link } from "react-router-dom";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
@@ -84,50 +83,10 @@ EnhancedTableHead.propTypes = {
   orderBy: PropTypes.string.isRequired,
 };
 
-export default function EstimateListComponent(props) {
-  const { listData = [], lang } = props;
-
-  const rows = [],
-    headCells = [
-      {
-        id: "appointmentId",
-        numeric: false,
-        disablePadding: false,
-        label: lang.estimatePage["APP_ID"],
-      },
-      {
-        id: "make",
-        numeric: true,
-        disablePadding: false,
-        label: lang.estimatePage["MAKE_MODEL"],
-      },
-      {
-        id: "createdAt",
-        numeric: true,
-        disablePadding: false,
-        label: lang.estimatePage["INSPECTION_TIME"],
-      },
-      {
-        id: "loc",
-        numeric: true,
-        disablePadding: false,
-        label: lang.estimatePage["WORKSHOP_NAME"],
-      },
-    ];
-
-  for (let i = 0; i < listData.length; i++) {
-    const { appointmentId, make, model, createdAt, loc, version } = listData[i];
-    rows.push({
-      appointmentId,
-      make: `${make} ${model}`,
-      createdAt,
-      loc: loc.name,
-      version,
-    });
-  }
-
+export default function ListComp(props) {
+  const { rows = [], headCells, orderByField, createRowData } = props;
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("appointmentId");
+  const [orderBy, setOrderBy] = React.useState(orderByField);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
@@ -170,24 +129,9 @@ export default function EstimateListComponent(props) {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const labelId = `enhanced-table-checkbox-${index}`;
-
                   return (
                     <TableRow hover tabIndex={-1} key={row.name}>
-                      <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="normal"
-                      >
-                        <Link
-                          to={`/estimate-detail/${row.appointmentId}/${row.version}`}
-                        >
-                          {row.appointmentId}
-                        </Link>
-                      </TableCell>
-                      <TableCell align="left">{row.make}</TableCell>
-                      <TableCell align="left">{row.createdAt}</TableCell>
-                      <TableCell align="left">{row.loc}</TableCell>
+                      {createRowData(TableCell, row, labelId)}
                     </TableRow>
                   );
                 })}

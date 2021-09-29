@@ -9,64 +9,29 @@ export default function EstimateDetailsForm(props) {
     data,
     item,
     rowIndex,
+    setEstimatesFieldsInitial,
+    estimatesFieldsInitial,
     SetEstimateFormDataAction,
     masterData,
   } = props;
   const [isEdit, setIsEdit] = useState(false);
   const [otherWorkToBeDoneFieldValue, setOtherWorkToBeDoneFieldValue] =
     useState("");
-  const [estimatesFieldsInitial, setEstimatesFieldsInitial] = useState({});
   const [possibleOptions, setPossibleOptions] = useState({});
-
   const onEditClick = () => {
     setIsEdit(true);
     let possibleData = {},
       availableData = {},
-      filteredData = {},
-      estimateFields = {};
+      filteredData = {};
 
-    if (estimateDetails && estimateDetails[0]) {
-      Object.keys(estimateDetails[0].data.qualityChecks).forEach(
-        (item, index) => {
-          if (
-            estimateDetails[0]?.data?.qualityChecks[item]?.invalidated ===
-              false &&
-            estimateDetails[0].data.checkpoints[item]?.ok === false
-          ) {
-            if (
-              estimateDetails[0]?.data?.estimates[item]?.invalidated === false
-            ) {
-              estimateFields[item] = {
-                labourCost:
-                  estimateDetails[0].data.estimates[item].labourCost >= 0
-                    ? estimateDetails[0].data.estimates[item].labourCost
-                    : null,
-                parts: estimateDetails[0].data.estimates[item].parts
-                  ? estimateDetails[0].data.estimates[item].parts
-                  : [{ name: "", cost: null }],
-              };
-              if (
-                !estimateDetails[0]?.data?.checkpoints[item]
-                  ?.refurbishmentChoices
-              ) {
-                estimateFields[item] = {
-                  labourCost: null,
-                  parts: [{ name: "", cost: null }],
-                };
-              }
-            }
-          }
-        }
-      );
-    }
-    if (estimateFields?.[item]?.parts?.length === 0) {
-      estimateFields[item].parts = [
+    if (estimatesFieldsInitial?.[item]?.parts?.length === 0) {
+      estimatesFieldsInitial[item].parts = [
         {
-          name: estimateFields[item]?.parts[0]?.name
-            ? estimateFields[item]?.parts[0]?.name
+          name: estimatesFieldsInitial[item]?.parts[0]?.name
+            ? estimatesFieldsInitial[item]?.parts[0]?.name
             : "",
-          cost: estimateFields[item]?.parts[0]?.cost
-            ? estimateFields[item]?.parts[0]?.cost
+          cost: estimatesFieldsInitial[item]?.parts[0]?.cost
+            ? estimatesFieldsInitial[item]?.parts[0]?.cost
             : null,
         },
       ];
@@ -126,7 +91,7 @@ export default function EstimateDetailsForm(props) {
         possibleData = filteredData;
       }
     }
-    setEstimatesFieldsInitial({ ...estimateFields });
+    setEstimatesFieldsInitial({ ...estimatesFieldsInitial });
     setPossibleOptions({ ...possibleData });
   };
 

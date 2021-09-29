@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { connect } from "react-redux";
-import EstimateListComponent from "./EstimateListComponent";
+import { Link } from "react-router-dom";
+import ListComp from "../../common/Layouts/ListView";
 import {
   GetEstimatesList,
   // getEstimatesListCount,
@@ -10,76 +11,86 @@ import {
 const EstimateListContainer = (props) => {
   const { estimateProps = {}, GetEstimatesListAction, lang } = props;
   const { estimateList = [] } = estimateProps;
+  const [rows, setRows] = useState([]);
+  const [headCells, setHeadCells] = useState([]);
   useEffect((_) => {
     let user = JSON.parse(localStorage.getItem("okta-token-storage"));
     let locationCode = user?.accessToken?.claims?.locations?.toString();
     GetEstimatesListAction && GetEstimatesListAction({}, locationCode);
   }, []);
+
+  useEffect(() => {
+    const rows = [],
+      headCells = [
+        {
+          id: "appointmentId",
+          numeric: false,
+          disablePadding: false,
+          label: lang.estimatePage["APP_ID"],
+        },
+        {
+          id: "make",
+          numeric: true,
+          disablePadding: false,
+          label: lang.estimatePage["MAKE_MODEL"],
+        },
+        {
+          id: "createdAt",
+          numeric: true,
+          disablePadding: false,
+          label: lang.estimatePage["INSPECTION_TIME"],
+        },
+        {
+          id: "loc",
+          numeric: true,
+          disablePadding: false,
+          label: lang.estimatePage["WORKSHOP_NAME"],
+        },
+      ];
+
+    for (let i = 0; i < estimateList.length; i++) {
+      const { appointmentId, make, model, createdAt, loc, version } =
+        estimateList[i];
+      rows.push({
+        appointmentId,
+        make: `${make} ${model}`,
+        createdAt,
+        loc: loc.name,
+        version,
+      });
+    }
+    setRows(rows);
+    setHeadCells(headCells);
+  }, [estimateList]);
+
+  const createRowData = (TableCell, row, labelId) => {
+    return (
+      <Fragment>
+        <TableCell component="th" id={labelId} scope="row" padding="normal">
+          <Link to={`/estimate-detail/${row.appointmentId}/${row.version}`}>
+            {row.appointmentId}
+          </Link>
+        </TableCell>
+        <TableCell align="left">{row.make}</TableCell>
+        <TableCell align="left">{row.createdAt}</TableCell>
+        <TableCell align="left">{row.loc}</TableCell>
+      </Fragment>
+    );
+  };
+
   return (
     <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
-      <EstimateListComponent lang={lang} listData={estimateList} />
+      <ListComp
+        rows={rows}
+        headCells={headCells}
+        lang={lang}
+        createRowData={createRowData}
+        orderByField={"appointmentId"}
+        listData={estimateList}
+      />
     </div>
   );
 };
-
-// import React, { Component } from "react";
-// import { connect } from "react-redux";
-// import loaderImg from "../../assets/img/loader.png";
-// // import AlertBox from "./../../common/showAlert";
-// import { setToasterMessage } from "../../store/actions/commonAction/common.action";
-// import EstimateListingComponent from "./estimateListingComponent";
-// import {
-//   getEstimatesListing,
-//   getEstimatesListingCount,
-//   searchAppointment,
-// } from "../../store/actions/workshopQaManagement/workshopQaManagement.action";
-
-// class EstimateListingContainer extends Component {
-//   constructor(props) {
-//     super(props);
-//   }
-
-//   componentDidMount() {
-//     let user = JSON.parse(localStorage.getItem("okta-token-storage"));
-//     let locationCode =
-//       user.accessToken &&
-//       user.accessToken.claims &&
-//       user.accessToken.claims.locations &&
-//       user.accessToken.claims.locations.toString();
-//     this.props.getEstimatesListing({}, locationCode);
-//     this.props.getEstimatesListingCount("", locationCode);
-//   }
-
-//   render() {
-//     return (
-//       <div>
-//         {/* {this.props.showToaster && (
-//         //   <AlertBox
-//         //     ShowAlert={this.props.showToaster}
-//         //     message={this.props.toasterMessage}
-//         //     closeToaster={this.closeToaster}
-//         //     type={this.props.toasterType}
-//         //   />
-//         )} */}
-//         {this.props.isProcessing && (
-//           <div className="loaderSection">
-//             {/* <img src={loaderImg} alt="loader" /> */}
-//           </div>
-//         )}
-//         <EstimateListingComponent
-//           estimatesListing={this.props.estimatesListing}
-//           getEstimatesListing={getEstimatesListing}
-//           toasterType={this.props.toasterType}
-//           toasterMessage={this.props.toasterMessage}
-//           showToaster={this.props.showToaster}
-//           qaListingCount={this.props.qaListingCount}
-//           getEstimatesListingCount={getEstimatesListingCount}
-//           searchAppointmentId={searchAppointment}
-//         />
-//       </div>
-//     );
-//   }
-// }
 
 const mapStateToProps = (state) => {
   return {

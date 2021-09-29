@@ -19,6 +19,7 @@ const EstimateDetailsComponent = (props) => {
   const [totalNoWorkToBeDone, setTotalNoWorkToBeDone] = useState("");
   const [acceptableImperfectionRejected, setAcceptableImperfectionRejected] =
     useState(false);
+  const [estimatesFieldsInitial, setEstimatesFieldsInitial] = useState({});
 
   const {
     make = "",
@@ -52,11 +53,39 @@ const EstimateDetailsComponent = (props) => {
     setAccImperfection(totalAcceptableImperfections);
 
     if (estimateDetails?.length && estimateDetails[0].data) {
-      let totalEstimatesToBeFilled = 0;
-      let totalEstimatesFilled = 0;
-      let totalEstimatesRejected = 0;
-      let totalNoWorkToBeDone = 0;
+      let totalEstimatesToBeFilled = 0,
+        totalEstimatesFilled = 0,
+        totalEstimatesRejected = 0,
+        totalNoWorkToBeDone = 0,
+        estimateFields = {};
       Object.keys(estimateDetails[0].data.qualityChecks).forEach((item) => {
+        if (
+          estimateDetails[0]?.data?.qualityChecks[item]?.invalidated ===
+            false &&
+          estimateDetails[0].data.checkpoints[item]?.ok === false
+        ) {
+          if (
+            estimateDetails[0]?.data?.estimates[item]?.invalidated === false
+          ) {
+            estimateFields[item] = {
+              labourCost:
+                estimateDetails[0].data.estimates[item].labourCost >= 0
+                  ? estimateDetails[0].data.estimates[item].labourCost
+                  : null,
+              parts: estimateDetails[0].data.estimates[item].parts
+                ? estimateDetails[0].data.estimates[item].parts
+                : [{ name: "", cost: null }],
+            };
+            if (
+              !estimateDetails[0]?.data?.checkpoints[item]?.refurbishmentChoices
+            ) {
+              estimateFields[item] = {
+                labourCost: null,
+                parts: [{ name: "", cost: null }],
+              };
+            }
+          }
+        }
         //check whether acceptable imperfection is rejected
         if (
           estimateDetails[0].data.qualityChecks[item]?.invalidated === false &&
@@ -100,6 +129,8 @@ const EstimateDetailsComponent = (props) => {
           totalEstimatesRejected += 1;
         }
       });
+
+      setEstimatesFieldsInitial({ ...estimateFields });
       setTotalNoWorkToBeDone(totalNoWorkToBeDone);
       setTotalEstimates(totalEstimatesToBeFilled);
       setRemainingEstimates(
@@ -178,7 +209,9 @@ const EstimateDetailsComponent = (props) => {
                     key={index + "key"}
                     estimateDetails={estimateDetails}
                     data={data}
+                    estimatesFieldsInitial={estimatesFieldsInitial}
                     rowIndex={index}
+                    setEstimatesFieldsInitial={setEstimatesFieldsInitial}
                     item={item}
                     SetEstimateFormDataAction={SetEstimateFormDataAction}
                     masterData={masterData}
