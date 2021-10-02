@@ -6,10 +6,11 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
+import Pagination from "@mui/material/Pagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import Paper from "@mui/material/Paper";
+import { LIST_PAGE_SIZE } from "../../utils/constants/values.constants";
 import { visuallyHidden } from "@mui/utils";
 
 function descendingComparator(a, b, orderBy) {
@@ -84,11 +85,25 @@ EnhancedTableHead.propTypes = {
 };
 
 export default function ListComp(props) {
-  const { rows = [], headCells, orderByField, createRowData } = props;
+  const {
+    rows = [],
+    headCells,
+    orderByField,
+    createRowData,
+    totalRecords,
+    pageChangeCb,
+  } = props;
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState(orderByField);
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const onPageChange = (args, pageNumber) => {
+    pageNumber -= 1;
+    if (pageNumber !== page) {
+      setPage(pageNumber);
+      pageChangeCb && pageChangeCb(pageNumber);
+    }
+  };
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -96,27 +111,20 @@ export default function ListComp(props) {
     setOrderBy(property);
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * LIST_PAGE_SIZE - rows.length) : 0;
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Paper sx={{ width: "100%", mb: 2 }}>
+    <Box sx={{ display: "flex", flex: 1 }}>
+      <Paper sx={{ display: "flex", flex: 1, flexDirection: "column", mb: 2 }}>
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
             aria-labelledby="tableTitle"
             size={"small"}
+            stickyHeader
+            aria-label="sticky table"
           >
             <EnhancedTableHead
               order={order}
@@ -126,7 +134,10 @@ export default function ListComp(props) {
             />
             <TableBody>
               {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                // .slice(
+                //   page * LIST_PAGE_SIZE,
+                //   page * LIST_PAGE_SIZE + LIST_PAGE_SIZE
+                // )
                 .map((row, index) => {
                   const labelId = `enhanced-table-checkbox-${index}`;
                   return (
@@ -135,7 +146,7 @@ export default function ListComp(props) {
                     </TableRow>
                   );
                 })}
-              {emptyRows > 0 && (
+              {/* {emptyRows > 0 && (
                 <TableRow
                   style={{
                     height: 53 * emptyRows,
@@ -143,18 +154,14 @@ export default function ListComp(props) {
                 >
                   <TableCell colSpan={6} />
                 </TableRow>
-              )}
+              )} */}
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+        <Pagination
+          onChange={onPageChange}
+          count={Math.ceil(totalRecords / LIST_PAGE_SIZE)}
+          page={page + 1}
         />
       </Paper>
     </Box>

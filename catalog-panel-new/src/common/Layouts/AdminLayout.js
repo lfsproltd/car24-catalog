@@ -1,25 +1,61 @@
 import React from "react";
 import Footer from "../Footer";
-import Header from "../Header";
+import Header from "../header/Header";
+import loaderImg from "../../assets/img/loader.png";
 import { lang as engLang } from "../../utils/constants/english_lang";
 import { connect } from "react-redux";
+import { SetErrorAlert } from "../../store/actions/globalActions";
+import Alert from "@mui/material/Alert";
 import LeftNav from "../LeftNav";
 
 const CompWithLanguage = (props) => {
-  const { LoadedComponent, currentLanguage, ...restProps } = props;
-  let lang = engLang;
-  if (currentLanguage === "thai") {
-    lang = require("../../utils/constants/thai_lang").lang;
+  const {
+    LoadedComponent,
+    currentLanguage,
+    loading,
+    errorMessage,
+    SetErrorAlertAction,
+    ...restProps
+  } = props;
+  let langTransObj = engLang;
+  if (currentLanguage === "th") {
+    langTransObj = require("../../utils/constants/thai_lang").lang;
   }
-  return <LoadedComponent lang={lang} {...restProps} />;
+
+  console.log("ssss", errorMessage);
+  return (
+    <div className="main-content-box">
+      {loading ? (
+        <div className="loaderSection">
+          <img src={loaderImg} alt="loader" />
+        </div>
+      ) : null}
+      {errorMessage ? (
+        <div className="alert-modal">
+          <Alert onClose={() => SetErrorAlertAction("")} severity="error">
+            {errorMessage}
+          </Alert>
+        </div>
+      ) : null}
+      <LoadedComponent
+        langTransObj={langTransObj}
+        selectedLang={currentLanguage}
+        {...restProps}
+      />
+    </div>
+  );
 };
 
 const mapStateToProps = (state) => {
   return {
-    currentLanguage: state.languageReducer.currentLanguage,
+    currentLanguage: state.globalReducer.currentLanguage,
+    loading: state.globalReducer.loading,
+    errorMessage: state.globalReducer.errorMessage,
   };
 };
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+  SetErrorAlertAction: SetErrorAlert,
+};
 const ConnectedComp = connect(
   mapStateToProps,
   mapDispatchToProps
@@ -35,16 +71,8 @@ function AdminLayout(
     return (
       <>
         {leftnav ? <LeftNav /> : null}
-        <div style={{ display: "flex", flex: "1" }} className="wrapper">
-          <div
-            style={{
-              display: "flex",
-              flex: "1",
-              flexDirection: "column",
-              overflow: "hidden",
-            }}
-            id="content"
-          >
+        <div className="wrapper">
+          <div id="content">
             {header ? <Header /> : null}
             <ConnectedComp LoadedComponent={LoadedComponent} {...props} />
             {footer ? <Footer /> : null}

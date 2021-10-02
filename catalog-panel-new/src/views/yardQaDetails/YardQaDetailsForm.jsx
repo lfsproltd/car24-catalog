@@ -250,8 +250,7 @@ export default function EstimateDetailsForm(props) {
           </div>
         ))}
         <div className="fields-wrapper">
-        <div className="row">	
-            <div className="col-lg-6">	
+          <div>
             {/* unacceptable imperfections */}
             {data?.checkpoints[item]?.ok === false &&
               data.checkpoints[item].choices.length && (
@@ -339,7 +338,6 @@ export default function EstimateDetailsForm(props) {
             />
           </div>
           {/* additional parts section*/}
-          <div className="col-lg-6">
           <div className="part-cost-wrapper">
             {estimatesFieldsInitial?.[item]?.parts.map(
               (partData, partIndex) => (
@@ -392,8 +390,6 @@ export default function EstimateDetailsForm(props) {
               </Button>
             ) : null}
           </div>
-          </div>	
-        </div>
         </div>
         <div className="action-buttons">
           <Button

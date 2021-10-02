@@ -113,7 +113,8 @@ export const config = {
       workorder:"?inspectionType=CATALOG&inspectionStatus=APPROVED&inventoryStatus=STOCK_IN&sort=createdAt,asc",
       inspectionTypeInspectionHistory:"?inspectionType=CATALOG&inspectionStatus=DONE,ESTIMATED,APPROVED,REJECTED&sort=createdAt,desc",
       inspectionType:"?inspectionType=CATALOG&inspectionStatus=ESTIMATED&locationType=SERVICE_CENTER&sort=createdAt,asc",//for production
-      inspectionTypeYard:"?inspectionType=CATALOG&inspectionStatus=ESTIMATED,QC_DONE&locationType=FULFILLMENT_CENTER&sort=createdAt,asc",//for production
+      //inspectionTypeYard:"?inspectionType=CATALOG&inspectionStatus=ESTIMATED,QC_DONE&locationType=FULFILLMENT_CENTER&sort=createdAt,asc",//for production
+      inspectionTypeYard:"?inspectionType=YARD&inspectionStatus=ESTIMATED,QC_DONE&sort=createdAt,asc&&additionalEstimatesPDI=false",//for QA, Added by HArsha
       c2c_zone:"/c2c-zones",
       region: '/region',
       catalog:"/catalog",

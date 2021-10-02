@@ -1,6 +1,6 @@
 import axios from "axios";
 import { getUserToken } from "./../utils/utils";
-import { setLoading } from "../store/actions/loadingActions";
+import { setLoading, SetErrorAlert } from "../store/actions/globalActions";
 
 var instance = axios.create();
 instance.interceptors.request.use(function (config) {
@@ -19,7 +19,7 @@ instance.interceptors.request.use(function (config) {
   return config;
 });
 
-const axiosService = {
+export const axiosService = {
   get: (endPoint, data, headers = {}) => {
     const config = {};
 
@@ -59,14 +59,34 @@ const axiosService = {
   },
 };
 
-const axiosCall = async ({ url, dispatch, method = "get", type }) => {
+const axiosCall = async ({
+  url,
+  dispatch,
+  method = "get",
+  type,
+  dataToSend = void 0,
+}) => {
   setLoading({ dispatch, data: true });
-  const data = await axiosService[method](url);
+  const dataToReturn = await axiosService[method](url, dataToSend)
+    .then((_data) => {
+      dispatch({
+        type,
+        payload: _data?.data,
+      });
+      return _data;
+    })
+    .catch((error) => {
+      dispatch(
+        SetErrorAlert(
+          error?.response?.data?.message
+            ? error.response.data.message
+            : "Something went wrong"
+        )
+      );
+    });
   setLoading({ dispatch, data: false });
-  dispatch({
-    type,
-    payload: data.data,
-  });
+
+  return dataToReturn;
 };
 
 export default axiosCall;

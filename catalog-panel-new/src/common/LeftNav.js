@@ -20,7 +20,7 @@ const LeftNav = (props) => {
     setUserRole(userRoles);
   }, []);
   return (
-    <nav id="sidebar" className="">
+    <nav id="sidebar" className="hide">
       <div className="sidebar-header">
         <h3>
           <Link to="/workshop-qa">Catalog Panel</Link>

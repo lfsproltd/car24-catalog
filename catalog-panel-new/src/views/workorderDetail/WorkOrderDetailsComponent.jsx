@@ -1,21 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import { Link } from "react-router-dom";
 import Paper from "@mui/material/Paper";
-import EstimateDetailsForm from "./EstimateDetailsForm";
 
 import "./estimateDetailsStyles.css";
+import AlertBox from "../../common/showAlert";
+import loaderImg from "../../assets/img/loader.png";
+import EstimateDetailsForm from "../estimateDetails/EstimateDetailsForm";
+import {useReactToPrint} from "react-to-print";
+import WorkorderPrintComponent from "./workorderPrintComponent";
 
-const EstimateDetailsComponent = (props) => {
+const WorkOrderDetailsComponent = (props) => {
   const {
-    estimateDetailsProps: { estimateDetails = [], masterData } = {},
-    SetEstimateFormDataAction,
-    SaveEstimates,
+    workOrderDetailsProps: { workOrderDetails = [], masterData } = {},
     langTransObj,
-    selectedLang,
+    selectedLang
   } = props;
 
-  const { labels = {}} = langTransObj  || {}
-  
+
+  const { labels = {}} = langTransObj  || {};
+
   const [nonAccImperfection, setNonAccImperfection] = useState("");
   const [accImperfection, setAccImperfection] = useState("");
 
@@ -36,13 +39,14 @@ const EstimateDetailsComponent = (props) => {
     loc: { name: locName = "" } = {},
     appointmentId = "",
     updatedAt = "",
+    formatedUpdatedAt= "",
     data = {},
-  } = estimateDetails.length ? estimateDetails[0] : {};
-  
+  } = workOrderDetails.length ? workOrderDetails[0] : {};
+
   useEffect(() => {
     let totalNonAcceptableImperfections = 0;
     let totalAcceptableImperfections = 0;
-    if (estimateDetails?.length && data.checkpoints) {
+    if (workOrderDetails?.length && data.checkpoints) {
       Object.keys(data.qualityChecks).map((item) => {
         if (data.qualityChecks[item].invalidated === false) {
           if (data.checkpoints[item].ok === false) {
@@ -58,7 +62,7 @@ const EstimateDetailsComponent = (props) => {
     setNonAccImperfection(totalNonAcceptableImperfections);
     setAccImperfection(totalAcceptableImperfections);
 
-    if (estimateDetails?.length && estimateDetails[0].data) {
+    if (workOrderDetails?.length && workOrderDetails[0].data) {
       let totalEstimatesToBeFilled = 0,
         totalEstimatesFilled = 0,
         totalEstimatesRejected = 0,
@@ -161,91 +165,89 @@ const EstimateDetailsComponent = (props) => {
           totalEstimatesRejected
       );
     }
-  }, [estimateDetails]);
+  }, [workOrderDetails]);
 
 
   return (
     <div className="wrapper">
-      <Link to="/estimate">{labels['BACK_BUTTON']}</Link>
-      <Paper className="paper" elevation={3}>
-        <div className="details-wrapper">
-          <div className="desc-span">
+          <Link to="/work-order"> Back </Link>
+          <PrintComponent data={workOrderDetails[0]}  accImperfection={accImperfection} nonAccImperfection={nonAccImperfection}/>
+          <Paper className="paper" elevation={3}>
+            <div className="details-wrapper">
+              <div className="desc-span">
             <span className="car-desc-title">
               {make} {model}
             </span>{" "}
-            {variant} | {fuelType}
-          </div>
-          <div className="desc-span">
-            <span className="desc-title">{labels['APP_ID']}</span>
-            {uid}
-          </div>
-          <div className="desc-span">
-            <span className="desc-title">{labels['WORKSHOP_NAME']}</span>
-            {locName}
-          </div>
-          <div className="desc-span">
-            <span className="desc-title">{labels['APPOINTMENT_ID']}</span>
-            {appointmentId}
-          </div>
-          <div className="desc-span">
-            <span className="desc-title">{labels['INSPECTION_DATE']}</span>
-            {updatedAt}
-          </div>
-          <div className="desc-span">
-            <span className="desc-title">{labels['ACCEPTABLE_IMPERFECTION']}</span>
-            {accImperfection}
-          </div>
-          <div className="desc-span">
-            <span className="desc-title">{labels['NON_ACCEPTABLE_IMPERFECTION']}</span>
-            {nonAccImperfection}
-          </div>
-          <div className="desc-span">
-            <span className="desc-title">{labels['TOTAL_ESTIMATES']}</span>
-            {totalEstimates}
-          </div>
-          <div className="desc-span">
-            <span className="desc-title">{labels['REMAINING_ESTIMATES']}</span>
-            {remainingEstimates}
-          </div>
-          <div className="desc-span">
-            <span className="desc-title">{labels['NO_WORK_TO_BE_DONE']}</span>
-            {totalNoWorkToBeDone}
-          </div>
-          <div className="last-div">
-            {acceptableImperfectionRejected ? (
-              <span style={{ color: "#F34500" }}>
+                {variant} | {fuelType}
+              </div>
+              <div className="desc-span">
+                <span className="desc-title">{labels['APP_ID']}</span>
+                {uid}
+              </div>
+              <div className="desc-span">
+                <span className="desc-title">{labels['WORKSHOP_NAME']}</span>
+                {locName}
+              </div>
+              <div className="desc-span">
+                <span className="desc-title">{labels['APPOINTMENT_ID']}</span>
+                {appointmentId}
+              </div>
+              <div className="desc-span">
+                <span className="desc-title">{labels['INSPECTION_DATE']}</span>
+                {updatedAt}
+              </div>
+              <div className="desc-span">
+                <span className="desc-title">{labels['ACCEPTABLE_IMPERFECTION']}</span>
+                {accImperfection}
+              </div>
+              <div className="desc-span">
+                <span className="desc-title">{labels['NON_ACCEPTABLE_IMPERFECTION']}</span>
+                {nonAccImperfection}
+              </div>
+              <div className="desc-span">
+                <span className="desc-title">{labels['TOTAL_ESTIMATES']}</span>
+                {totalEstimates}
+              </div>
+              <div className="desc-span">
+                <span className="desc-title">{labels['REMAINING_ESTIMATES']}</span>
+                {remainingEstimates}
+              </div>
+              <div className="desc-span">
+                <span className="desc-title">{labels['NO_WORK_TO_BE_DONE']}</span>
+                {totalNoWorkToBeDone}
+              </div>
+              <div className="last-div">
+                {acceptableImperfectionRejected ? (
+                    <span style={{ color: "#F34500" }}>
                 {labels['ACCEPTABLE_IMPERFECTION_REJECT_TEXT']}
               </span>
-            ) : null}
-          </div>
-        </div>
-        {/* photo section here -  */}
-        {data?.qualityChecks
-          ? Object.keys(data.qualityChecks).map((item, index) => {
-              if (
-                data.qualityChecks[item]?.invalidated === false &&
-                data.checkpoints[item]?.ok === false
-              ) {
-                return (
-                  <EstimateDetailsForm
-                    key={index + "key"}
-                    estimateDetails={estimateDetails?.[0]}
-                    data={data}
-                    estimatesFieldsInitial={estimatesFieldsInitial}
-                    rowIndex={index}
-                    setEstimatesFieldsInitial={setEstimatesFieldsInitial}
-                    item={item}
-                    SetEstimateFormDataAction={SetEstimateFormDataAction}
-                    masterData={masterData}
-                    SaveEstimates={SaveEstimates}
-                  />
-                );
-              }
-            })
-          : null}
-      </Paper>
+                ) : null}
+              </div>
+            </div>
+          </Paper>
     </div>
   );
 };
 
-export default EstimateDetailsComponent;
+export default WorkOrderDetailsComponent;
+
+export const PrintComponent = (props) => {
+  const [printData,setPrintData] = useState(false);
+  const componentRef = useRef();
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current
+  });
+  useEffect(()=>{
+    if(props && props.data){
+      setPrintData(true)
+    }
+  },[props]);
+  return (
+      <div>
+        <button onClick={handlePrint} className="print-button-work-order">Print{printData}</button>
+        <div hidden={true}>
+          <WorkorderPrintComponent ref={componentRef} data={props.data} accImperfection={props.accImperfection} nonAccImperfection={props.nonAccImperfection}/>
+        </div>
+      </div>
+  );
+};

@@ -3,16 +3,19 @@ import { reducer as formReducer } from "redux-form";
 import Common from "./commonReducer";
 import estimateReducer from "./estimateReducer";
 import WorkshopManagement from "./workshopReducer";
-import loadingReducer from "./loadingReducer";
+import globalReducer from "./globalReducer";
 import estimateDetailsReducer from "./estimateDetailsReducer";
-import languageReducer from "./languageReducer";
+import QaReducer from "./qaReducer";
+import inspectionReducer from "./inspection";
+import inspectionDetailsReducer from "./inspectionDetailsReducer";
 
 export default combineReducers({
   form: formReducer,
   commonReducer: Common,
-  workshopReducer: WorkshopManagement,
   estimateReducer,
-  loadingReducer,
+  globalReducer,
   estimateDetailsReducer,
-  languageReducer,
+  qaReducer: QaReducer, // Added
+  inspectionReducer,
+  inspectionDetailsReducer,
 });

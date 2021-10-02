@@ -7,6 +7,7 @@ import {
 const initialState = {
   estimateDetails: [],
   masterData: {},
+  isProcessing: true,
 };
 
 const estimateDetailsReducer = (state = initialState, action) => {

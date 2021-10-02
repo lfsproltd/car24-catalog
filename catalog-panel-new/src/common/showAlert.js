@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Notification } from '@progress/kendo-react-notification';
-import { Fade } from '@progress/kendo-react-animation';
+//import { Notification } from '@progress/kendo-react-notification';
+//import { Fade } from '@progress/kendo-react-animation';
 import { useDispatch } from 'react-redux';
 import { setToasterMessage } from './../store/actions/commonAction/common.action'
 
@@ -31,15 +31,16 @@ const AlertBox = (props) => {
     return (
         <div className="alertMsg">
             {
-                ShowAlert && <Fade enter={true} exit={true}>{
-                    <Notification
-                        type={{ style: MessageType, icon: false }}
-                        closable={true}
-                        onClose={() => setAlert(false)}
-                    >
-                        <span>{ShowMessage}</span>
-                    </Notification>}
-                </Fade>
+                // ShowAlert && <Fade enter={true} exit={true}>{
+                //     // <Notification
+                //     //     type={{ style: MessageType, icon: false }}
+                //     //     closable={true}
+                //     //     onClose={() => setAlert(false)}
+                //     // >
+                //     //     <span>{ShowMessage}</span>
+                //     // </Notification>
+                //     }
+                // </Fade>
             }
         </div>
     )

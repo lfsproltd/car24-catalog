@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import { withOktaAuth } from "@okta/okta-react";
-import { getUserData } from "./../utils/utils";
+import { getUserData } from "../../utils/utils";
 import { connect } from "react-redux";
 // import { DropDownList } from '@progress/kendo-react-dropdowns';
-import { redirectPage } from "../utils/utils";
+import { redirectPage } from "../../utils/utils";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import { SetLanguage } from "../store/actions/languageActions";
+import { SetLanguage } from "../../store/actions/globalActions";
 import InputLabel from "@mui/material/InputLabel";
 import Select from "@mui/material/Select";
-import { config } from "../utils/constants/api.constants";
+import { config } from "../../utils/constants/api.constants";
 import { Redirect } from "react-router-dom";
 
 class Header extends Component {
@@ -171,26 +171,28 @@ class Header extends Component {
     return (
       <header className="headerSection">
         <div className="container-fluid">
-          <div className="row">
+          <div className="row language-select">
             {this.state.redirect && <Redirect to={this.state.redirect} />}
-            <div className="col-lg-4 typeSelect">
-              <div className="row">
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">
-                    Language
-                  </InputLabel>
-                  <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={currentLanguage}
-                    label="Language"
-                    onChange={SetLanguageAction}
-                  >
-                    <MenuItem value={"eng"}>English</MenuItem>
-                    <MenuItem value={"thai"}>Thai</MenuItem>
-                  </Select>
-                </FormControl>
-                {/* <div className="col-lg-3">
+            <div className="col-lg-2 col-sm-2  col-2 d-md-none">
+              <i class="fa fa-bars"></i>
+            </div>
+            <div className="col-lg-2 col-sm-3 col-4">
+              <FormControl fullWidth>
+                {/* <InputLabel id="demo-simple-select-label">	
+                    Language	
+                  </InputLabel> */}
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={currentLanguage}
+                  label="Language"
+                  onChange={SetLanguageAction}
+                >
+                  <MenuItem value={"en"}>English</MenuItem>
+                  <MenuItem value={"th"}>Thai</MenuItem>
+                </Select>
+              </FormControl>
+              {/* <div className="col-lg-3">
                                     <DropDownList
                                         data={this.state.claims.country}
                                         onChange={(e) => this.changeCountry(e)}
@@ -206,9 +208,8 @@ class Header extends Component {
                                         defaultValue={this.state.vehicleType}
                                     />
                                 </div>  */}
-              </div>
             </div>
-            <div className="col-lg-8">
+            <div className="col-lg-10 col-sm-7 col-6">
               <div className="userName">
                 {this.state.userData && this.state.userData.name}{" "}
                 <span className="k-icon k-i-arrow-chevron-down"></span>
@@ -226,7 +227,7 @@ class Header extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    currentLanguage: state.languageReducer.currentLanguage,
+    currentLanguage: state.globalReducer.currentLanguage,
   };
 };
 const mapDispatchToProps = {

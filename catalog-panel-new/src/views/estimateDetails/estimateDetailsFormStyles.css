@@ -2,7 +2,7 @@
 .detail-form-section-wrapper{
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
 }
 .form-title-wrapper{
     display: flex;
@@ -25,24 +25,42 @@
     margin-right: 23px;
 }
 
-.photos-slider{
-    margin-top: 10px;
-    height: 325px;
-    overflow: auto;
-}
+.photos-slider{	
+    margin-top: 10px;	
+    max-height: 325px;	
+    overflow: hidden;	
+    object-fit: cover;	
+    border: 2px solid #ddd;	
+    max-width: 306px;	
+    border-radius: 2px;	
+    min-height: 325px;	
+}	
 
 .photo-slider-image{
     width: 325px;
 }
 
-.fields-wrapper{
+/* .fields-wrapper1{
     display: flex;
     flex: 1;
+    margin-top: 10px;
+} */
+
+.labour-cost-text{
     margin-top: 10px;
 }
 
 .edit-button{
     width: 100px;
+}
+.save-button{
+    width: 100px;
+    margin-left: 10px;
+}
+
+.add-more-button{
+    width: 200px;
+    margin-top: 20px;
 }
 
 .action-buttons{
@@ -57,4 +75,23 @@ flex-direction: column;
 .edit-fields{
 display: flex;
 flex-direction: column;
+}
+
+/* .part-cost-wrapper{
+    margin-left: 30px;
+    margin-bottom: 10px;
+} */
+
+.part-cost-row{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.remove-icon{
+    cursor: pointer;
+    margin-left: 10px;
+}
+.add-part-cost-wrapper{
+    margin-left: 10px;
 }

@@ -1,31 +1,31 @@
 import axiosCall from "../../../inits/axios";
 import { config } from "./../../../utils/constants/api.constants";
 import {
-  GET_ESTIMATE_LIST_DETAIL,
-  GET_MASTER_DATA_CHECKPOINTS,
-  SET_ESTIMATE_FORM_DATA,
-  SAVE_ESTIMATES,
+    GET_MASTER_DATA_CHECKPOINTS,
+    GET_INSPECTION_DETAIL, GET_INSPECTION_LIST,
 } from "../../types";
 import { convertObjectToParams } from "../../../utils/utils";
 
-export const SaveEstimates =
-  (dataToSend, appointmentId, selectedLang) => (dispatch) => {
-    let url =
-      config.api.workshop.host +
-      config.api.workshop.inspection +
-      "/" +
-      appointmentId;
 
-    axiosCall({
-      url,
-      dispatch,
-      method: "post",
-      type: SAVE_ESTIMATES,
-      dataToSend,
-    });
-  };
+export const GetInspectionList =
+    (params = {}, locations, query, lang) =>
+        async (dispatch) => {
+            let url =
+                config.api.workshop.host +
+                config.api.workshop.inspection +
+                "/" +
+                query +
+                "&locationCode=" +
+                locations +
+                `${
+                    params && params.page && params.size
+                        ? "&offset=" + +params.page * +params.size + "&limit=" + params.size
+                        : ""
+                }&lang=${lang}`;
+            axiosCall({ url, dispatch, method: "get", type: GET_INSPECTION_LIST });
+        };
 
-export const GetEstimateDetails =
+export const GetInspectionDetails =
   (params = {}, selectedLang) =>
   (dispatch) => {
     let url =
@@ -40,10 +40,9 @@ export const GetEstimateDetails =
       url,
       dispatch,
       method: "get",
-      type: GET_ESTIMATE_LIST_DETAIL,
+      type: GET_INSPECTION_DETAIL,
     }).then((data) => {
       const { data: apiRes } = data;
-      debugger;
       const { schemaVersion = "" } = apiRes?.[0] || {};
       GetMasterDataQaImageKeys(schemaVersion, selectedLang)(dispatch);
     });
@@ -65,10 +64,4 @@ export const GetMasterDataQaImageKeys =
       method: "get",
       type: GET_MASTER_DATA_CHECKPOINTS,
     });
-  };
-
-export const SetEstimateFormData =
-  ({ key, data }) =>
-  (dispatch) => {
-    dispatch({ type: SET_ESTIMATE_FORM_DATA, payload: { key, data } });
   };

@@ -25,13 +25,40 @@ const EstimatePage = asyncComponent(() =>
   )
 );
 
-const estimateDetailPage = asyncComponent(() =>
+const EstimateDetailPage = asyncComponent(() =>
   import("../views/estimateDetails/EstimateDetailsContainer").then(
     (module) => module.default
   )
 );
 
-const WorkOrderPage = () => <div>hel 11</div>;
+const YardQaListPage = asyncComponent(() =>
+  import("../views/yardQaList/YardQaListContainer").then(
+    (module) => module.default
+  )
+);
+
+const YardQaDetailsPage = asyncComponent(() =>
+  import("../views/yardQaDetails/YardQaDetailsContainer").then(
+    (module) => module.default
+  )
+);
+
+const WorkOrderPage = asyncComponent(() =>
+  import("../views/workorder/WorkOrderListContainer").then(
+    (module) => module.default
+  )
+);
+
+const WorkOrderDetailPage = asyncComponent(() =>
+  import("../views/workorderDetail/WorkOrderDetailsContainer").then(
+    (module) => module.default
+  )
+);
+const WorkshopPage = asyncComponent(() =>
+  import("../views/estimate/EstimateListContainer").then(
+    (module) => module.default
+  )
+);
 
 // const workshopQaContainer = asyncComponent(() =>
 //   import('../views/workshopQa/workshopQaContainer').then(module => module.default)
@@ -90,6 +117,8 @@ function OktaRoutes() {
         <Route exact path="/" component={accountContainer} />
         <Route path="/implicit/callback" component={LoginCallback} />
         <Route exact path="/estimate" component={AdminLayout(EstimatePage)} />
+        <Route exact path="/yard-qa" component={AdminLayout(YardQaListPage)} />
+
         <Route
           exact
           path="/work-order"
@@ -98,7 +127,23 @@ function OktaRoutes() {
         <Route
           exact
           path="/estimate-detail/:appointmentId/:version"
-          component={AdminLayout(estimateDetailPage)}
+          component={AdminLayout(EstimateDetailPage)}
+        />
+
+        <Route
+          exact
+          path="/yard-qa/:appointmentId/:version"
+          component={AdminLayout(YardQaDetailsPage)}
+        />
+        <Route
+          exact
+          path="/work-order-detail/:appointmentId/:version"
+          component={AdminLayout(WorkOrderDetailPage)}
+        />
+        <Route
+          exact
+          path="/workshop-qa"
+          component={AdminLayout(WorkshopPage)}
         />
         {/* <Route exact path="/workshop-qa" component={AdminLayout(workshopQaContainer)} />
         <Route exact path="/yard-qa" component={AdminLayout(yardQaContainer)} />
@@ -111,7 +156,7 @@ function OktaRoutes() {
         <Route exact path="/work-order" component={AdminLayout(workorderListingContainer)} />
         <Route exact path="/work-order/:appointmentId/:version" component={AdminLayout(workorderDetailContainer)} />   */}
         <Route exact path="/unauthorized" component={unAuthComp} />
-        <Redirect to="/" />
+        <Redirect to="/estimate" />
       </Switch>
     </Security>
   );

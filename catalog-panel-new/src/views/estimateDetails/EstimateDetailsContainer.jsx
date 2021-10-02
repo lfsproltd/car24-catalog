@@ -5,6 +5,7 @@ import {
   GetEstimateDetails,
   GetMasterDataQaImageKeys,
   SetEstimateFormData,
+  SaveEstimates as SaveEstimatesAction,
 } from "../../store/actions/estimateDetailsActions";
 
 function EstimateDetailsContainer(props) {
@@ -13,23 +14,37 @@ function EstimateDetailsContainer(props) {
     GetMasterDataQaImageKeysAction,
     estimateDetailsProps,
     SetEstimateFormDataAction,
+    langTransObj,
+    selectedLang,
+    SaveEstimatesAction,
   } = props;
-  useEffect((_) => {
-    let appointmentId = props?.match?.params?.appointmentId;
-    let version = props?.match?.params?.version;
-    let params = {
-      appointmentId: appointmentId,
-      inspectionType: "CATALOG",
-      version: version,
-    };
-    GetEstimateDetailsAction && GetEstimateDetailsAction(params);
-    GetMasterDataQaImageKeysAction && GetMasterDataQaImageKeysAction();
-  }, []);
+  useEffect(
+    (_) => {
+      let appointmentId = props?.match?.params?.appointmentId;
+      let version = props?.match?.params?.version;
+      let params = {
+        appointmentId: appointmentId,
+        inspectionType: "CATALOG",
+        version: version,
+      };
+      GetEstimateDetailsAction &&
+        GetEstimateDetailsAction(params, selectedLang);
+    },
+    [selectedLang]
+  );
+
+  const SaveEstimates = (data, appointmentId) => {
+    SaveEstimatesAction &&
+      SaveEstimatesAction(data, appointmentId, selectedLang);
+  };
 
   return (
     <EstimateDetailsComponent
+      SaveEstimates={SaveEstimates}
       SetEstimateFormDataAction={SetEstimateFormDataAction}
       estimateDetailsProps={estimateDetailsProps}
+      langTransObj={langTransObj}
+      selectedLang={selectedLang}
     />
   );
 }
@@ -37,18 +52,19 @@ function EstimateDetailsContainer(props) {
 const mapStateToProps = (state) => {
   return {
     estimateDetailsProps: state.estimateDetailsReducer,
-    isProcessing: state.workshopReducer.isProcessing,
+    isProcessing: state.estimateDetailsReducer.isProcessing,
     showToaster: state.commonReducer.showToaster,
     toasterMessage: state.commonReducer.toasterMessage,
     toasterType: state.commonReducer.toasterType,
-    listingDetails: state.workshopReducer.estimatesListingDetail,
-    masterData: state.workshopReducer.masterData,
+    listingDetails: state.qaReducer.estimatesListingDetail,
+    masterData: state.estimateDetailsReducer.masterData,
   };
 };
 const mapDispatchToProps = {
   GetEstimateDetailsAction: GetEstimateDetails,
   GetMasterDataQaImageKeysAction: GetMasterDataQaImageKeys,
   SetEstimateFormDataAction: SetEstimateFormData,
+  SaveEstimatesAction,
   //   setToasterMessage,
   //   getEstimateDetails,
   //   approveQualityChecks,
