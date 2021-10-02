@@ -14,8 +14,10 @@ export const lang = {
     APP_ID: "App. Id",
     MAKE_MODEL: "Make/Model",
     INSPECTION_TIME: "Inspection Time",
-    WORKSHOP_NAME: "Workshop Name",
+ 
     INSPECTED_BY: "Inspected By",
+
+
     WORKSHOP_NAME: "WorkShop Name",
     APPOINTMENT_ID: "Appointment ID",
     INSPECTION_DATE: "Inspection Date",
@@ -34,6 +36,8 @@ export const lang = {
     ADDITIONAL_PART_TEXT: "Additional Part",
     PART_COST_TEXT: "Part Cost",
     SET_TAG_AS: "Set tag as",
+
+    YARD_NAME: "Yard Name",
 
 
     APPROVE: "Approve",

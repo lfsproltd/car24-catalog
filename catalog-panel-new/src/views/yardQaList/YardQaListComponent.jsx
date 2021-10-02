@@ -2,6 +2,7 @@ import React, { Fragment, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { debounce } from "../../utils/utils";
 import ListComp from "../../common/Layouts/ListView";
+import AssignedToCell from "../../common/Tooltip/assignedToCell";
 
 const YardQaListComponent = (props) => {
   const {
@@ -30,28 +31,35 @@ const YardQaListComponent = (props) => {
       headCells = [
         {
           id: "appointmentId",
-          numeric: false,
+          numeric: true,
           disablePadding: false,
           label: labels["APP_ID"],
         },
         {
           id: "make",
-          numeric: true,
+          numeric: false,
           disablePadding: false,
           label: labels["MAKE_MODEL"],
         },
         {
           id: "createdAt",
-          numeric: true,
+          numeric: false,
           disablePadding: false,
           label: labels["INSPECTION_TIME"],
         },
         {
           id: "loc",
-          numeric: true,
+          numeric: false,
           disablePadding: false,
-          label: labels["WORKSHOP_NAME"],
+          label: labels["YARD_NAME"],
         },
+        {
+          id: "assignedTo",
+          numeric: false,
+          disablePadding: false,
+          label: labels["ASSIGNED_TO"],
+        },
+        
       ];
     yardQaList.map((data) => {
       const row_data = {
@@ -60,6 +68,7 @@ const YardQaListComponent = (props) => {
         createdAt: data["createdAt"],
         loc: data["loc"]?.name,
         version: data["version"],
+        assignedTo: data["assignedTo"]
       };
       rows.push(row_data);
     });
@@ -78,6 +87,11 @@ const YardQaListComponent = (props) => {
         <TableCell align="left">{row.make}</TableCell>
         <TableCell align="left">{row.createdAt}</TableCell>
         <TableCell align="left">{row.loc}</TableCell>
+        <TableCell align="left">
+            <AssignedToCell
+              dataItem = {row}
+            />
+        </TableCell>
       </Fragment>
     );
   };

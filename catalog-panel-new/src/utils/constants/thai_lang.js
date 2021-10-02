@@ -17,7 +17,6 @@ export const lang = {
         APP_ID: "รหัสนัดหมาย",
         MAKE_MODEL: "ยี่ห้อ/รุ่น",
         INSPECTION_TIME: "เวลาตรวจสอบ",
-        WORKSHOP_NAME: "ชื่อเวิร์กชอป",
 
 
         INSPECTED_BY: "ตรวจสอบโดย",
@@ -39,6 +38,8 @@ export const lang = {
         ADDITIONAL_PART_TEXT: "ส่วนเพิ่มเติม",
         PART_COST_TEXT: "ค่าอะไหล",
         SET_TAG_AS: "ตั้งแท็กเป็น",
+
+        YARD_NAME: "ชื่อสนาม",
 
         APPROVE: "อนุมัติ",
         REJECT: "ปฏิเสธ",

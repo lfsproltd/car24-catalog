@@ -1,4 +1,5 @@
 import {
+  ASSIGN_APPOINTMENT_ID,
   GET_YARD_LISITNG_DETAILS_DATA,
   GET_MASTER_DATA_CHECKPOINTS,
   LOADER_HANDLER,
@@ -7,6 +8,7 @@ import {
   GET_LAST_INSPECTION_DATA,
   APPROVE_REJECT_QUALITY_CHECK,
 } from "../../types";
+
 import { AlertType } from "../../../utils/constants/values.constants";
 
 import { axiosService } from "../../../inits/axios";
@@ -252,6 +254,46 @@ export const addTagging =
             e && e.response && e.response.data && e.response.data.message
               ? e.response.data.message
               : "Something went wrong",
+          showToaster: true,
+          toasterType: AlertType.ERROR,
+        })
+      );
+    }
+  };
+
+
+  export const assignAppointmentId =
+  (appointmentId, version, path) => async (dispatch) => {
+    dispatch({ type: LOADER_HANDLER });
+    let url =
+      config.api.workshop.host +
+      config.api.workshop.catalog +
+      config.api.workshop.assign +
+      "/" +
+      appointmentId +
+      "?inspectionType=CATALOG";
+    try {
+      const data = await axiosService.put(url);
+      if (data.status === 200) {
+        dispatch({ type: ASSIGN_APPOINTMENT_ID, payload: "assigned" });
+        dispatch(
+          setToasterMessage({
+            toasterMessage: "Assigned Successfully",
+            showToaster: true,
+            toasterType: AlertType.SUCCESS,
+          })
+        );
+        setTimeout(() => {
+          window.location.pathname = path + "/" + appointmentId + "/" + version;
+        }, 1000);
+      }
+    } catch (data) {
+      dispatch(
+        setToasterMessage({
+          toasterMessage:
+            data.response.data && data.response.data.message
+              ? data.response.data.message
+              : "Already Assigned, please refresh page",
           showToaster: true,
           toasterType: AlertType.ERROR,
         })

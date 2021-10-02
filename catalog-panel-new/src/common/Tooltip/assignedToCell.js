@@ -2,7 +2,9 @@ import React from "react";
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { br } from 'react-router-dom';
-import {assignAppointmentId} from "./../../store/actions/workshopQaManagement/workshopQaManagement.action";
+import {assignAppointmentId} from "./../../store/actions/qaManagement/qa.management.actions";
+
+
 class AssignedToCell extends React.Component {
     constructor(props){
         super(props);
@@ -36,8 +38,8 @@ class AssignedToCell extends React.Component {
 
 const mapStateToProps = state => {
     return {
-        isProcessing: state.workshopReducer.isProcessing,
-        assignedResponse: state.workshopReducer.assignedResponse
+        isProcessing: state.qaReducer.isProcessing,
+        assignedResponse: state.qaReducer.assignedResponse
     };
 };
 

@@ -956,7 +956,7 @@ const YardQaDetailsComponent = (props) => {
 
             <div className="col-lg-3">
               <div className="form-group bolder-label">
-                <label>{labels["WORKSHOP_NAME"]}:</label>
+                <label>{labels["YARD_NAME"]}:</label>
                 {appointmentDetails?.loc?.name
                   ? " " + appointmentDetails?.loc?.name
                   : " N/A"}
