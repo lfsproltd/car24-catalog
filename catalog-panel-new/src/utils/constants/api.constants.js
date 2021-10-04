@@ -93,7 +93,14 @@ export const config = {
     },
     inspection: {
       host: BASE_INSPECTION_URL,
-      inspection: '/inspection'
+      inspection: '/inspection',
+      inspectionCatalogSummary: "/catalog/summary",
+      inspectionCatalogMaster: "/catalog/master",
+      q: {
+        appointmentId: "appointmentId",
+        inspectionType: "inspectionType",
+        version: "version",
+      }
     },
     google:{
       googleKey:KEY
@@ -119,6 +126,7 @@ export const config = {
       region: '/region',
       catalog:"/catalog",
       master: "/master",
+      summary: "/summary",
       carTagging:"/tag"
 
     }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import './../workshopQaDetail/workshopDetails.css';
+import './../workshopQaDetails/workshopQaDetails.css';
 const CustomDialog = (props) => {
     return(
         <div className="custom-dialog">

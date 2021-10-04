@@ -43,7 +43,6 @@ export const GetEstimateDetails =
       type: GET_ESTIMATE_LIST_DETAIL,
     }).then((data) => {
       const { data: apiRes } = data;
-      debugger;
       const { schemaVersion = "" } = apiRes?.[0] || {};
       GetMasterDataQaImageKeys(schemaVersion, selectedLang)(dispatch);
     });

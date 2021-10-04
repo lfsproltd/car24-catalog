@@ -2,7 +2,7 @@ import React from "react";
 import Footer from "../Footer";
 import Header from "../header/Header";
 import loaderImg from "../../assets/img/loader.png";
-import { lang as engLang } from "../../utils/constants/english_lang";
+import { lang as engLang } from "../../utils/constants/lang_en";
 import { connect } from "react-redux";
 import { SetErrorAlert } from "../../store/actions/globalActions";
 import Alert from "@mui/material/Alert";
@@ -18,8 +18,8 @@ const CompWithLanguage = (props) => {
     ...restProps
   } = props;
   let langTransObj = engLang;
-  if (currentLanguage === "th") {
-    langTransObj = require("../../utils/constants/thai_lang").lang;
+  if (currentLanguage !== "en") {
+    langTransObj = require("../../utils/constants/lang_"+currentLanguage).lang;
   }
 
   console.log("ssss", errorMessage);

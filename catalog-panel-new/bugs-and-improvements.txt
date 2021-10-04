@@ -1,0 +1,43 @@
+Workshop QA details:
+1. There are two calls for fetching the appointment, it should be just one request with: sort=createdAt,desc&version=all
+  e.g. https://refurbishment-service.qac24svc.dev/inspection?limit=2&sort=createdAt,desc&version=all&inspectionType=CATALOG&appointmentId=1135138205
+2. Verify ordering of the checkpoints listed, its different from existing app
+3. for: https://catalog-panel.qac24svc.dev/workshop-qa/1019147945/0
+   - Exterior + Tyres + Grill :Existing app shows "OK / No Imperfection" but new app doesn't
+   - No work done is not shown for : AC + Cooling Fan, and: Exterior + Tyres + Pillar + RHS B : SEEMS the CSS is broken - it is shown at top component
+4. https://catalog-panel.qac24svc.dev/workshop-qa/1135138205/1
+  - Shows lot more checkpoints compared to existing app which shows only 5
+  -
+5. Test edit functionality
+6. Test Approve / Reject / No work to be done actions
+7. Test photos
+8. Checkpoints : list all based on master data?
+
+
+Yard QA listing:
+1.  Page counter shows NaN
+
+Yard QA Details:
+1. Test Photos
+2. Test Approve/Reject/Edit/Tag actions
+3. Ordering of checkpoints is different from existing app
+4. http://localhost:3000/yard-qa/11111112/0
+ - the color should match the text shown next to checkpoint title, e.g. AC + Cooling Fan  says GREEN but background color is dfferent
+ - AC + Cooling Fan : should we show Reject action? existing app doesn't show but it could be a bug in existing app
+  - Lights + Fog Light + Rear : should we show Reject? existing app doesn't - could be a bug in existing app?
+5. Submit all QC checks button is broken, it shows top component with labels on submitting
+6. Checkpoints : list all based on master data?
+
+Left Navigator:
+BUild the list of menu considering all roles, without duplicating the menu
+
+
+Estimate screen:
+ - will list all checkpoints from master data? same on workshop qa and yard qa?
+
+Workshop qa -> No Work to be done -> only for unacceptable imperfections => what will happen then ? will it go to estimates or is it considered as no imperfection
+
+EDIT on workshop and yard qa : what exactly can edit?
+
+Inspection history details:
+ - show from master data title instead of the key for checkpoints

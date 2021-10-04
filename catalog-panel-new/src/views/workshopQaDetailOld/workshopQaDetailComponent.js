@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import loaderImg from "../../assets/img/loader.png";
 import AlertBox from './../../common/showAlert';
-import "../workshopQaDetail/workshopDetails.css";
+import "../workshopQaDetail/workshopDetails_Old.css";
 import { useHistory } from "react-router-dom";
 import { dateFormat, setLocationType, timeFormat } from "../../utils/utils";
 import { AlertType } from '../../utils/constants/values.constants';
@@ -12,7 +12,7 @@ import { connect } from 'react-redux';
 import {getWorkshopListingDetails,approveQualityChecks,getInspectionSummary} from "../../store/actions/workshopQaManagement/workshopQaManagement.action";
 import CustomDialog from './../dialog/customDialog';
 
-const WorkshopQaDetailsComponent = (props) => {
+const WorkshopQaDetailComponent = (props) => {
   const historyLink = useHistory();
   const dispatch = useDispatch();
   let imperfectionActionsData = {
@@ -1952,4 +1952,4 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps,
-  mapDispatchToProps,)(WorkshopQaDetailsComponent);
+  mapDispatchToProps,)(WorkshopQaDetailComponent);

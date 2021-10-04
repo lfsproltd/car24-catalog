@@ -1,45 +1,58 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import YardQaListComponent from "./YardQaListComponent";
-import { GetYardQaList } from "../../store/actions/qaManagement/yard.actions";
+import { LIST_PAGE_SIZE } from "../../utils/constants/values.constants";
+import { getYardQaList , searchYardQaList} from "../../store/actions/qaManagement/yard.actions";
 
-import { SearchAppointment } from "../../store/actions/estimateActions";
 
 const YardQaListContainer = (props) => {
   const {
-    yardQaList = [],
-    GetYardQaListAction,
+    yardQaListReducerProps,
     langTransObj,
     selectedLang,
-    SearchAppointmentAction,
+    SearchYardQaListAction,
+    GetYardQaListAction
   } = props;
 
-  useEffect(() => {
+  const listCall = ({ pageNumber, callCount }) => {
+    
     let user = JSON.parse(localStorage.getItem("okta-token-storage"));
     let locationCode = user?.accessToken?.claims?.locations?.toString();
-    // https://refurbishment-service.qac24svc.dev/inspection/?inspectionType=YARD&inspectionStatus=ESTIMATED,QC_DONE&sort=createdAt,asc&additionalEstimatesPDI=false
-    GetYardQaListAction && GetYardQaListAction({}, locationCode, selectedLang);
+    
+    GetYardQaListAction &&
+    GetYardQaListAction(
+        { size: LIST_PAGE_SIZE, page: pageNumber, callCount },
+        selectedLang
+      );
+  };
+
+  useEffect(() => {
+
+    listCall({ pageNumber: 0, callCount: true });
+
   }, [selectedLang]);
+  
 
   return (
     <YardQaListComponent
-      yardQaList={yardQaList}
-      GetYardQaListAction={GetYardQaListAction}
+      yardQaListReducerProps={yardQaListReducerProps}
       langTransObj={langTransObj}
       selectedLang={selectedLang}
-      SearchAppointmentAction={SearchAppointmentAction}
+      SearchItemAction={SearchYardQaListAction}
+      listCall={listCall}
     />
+    
   );
 };
 
 const mapStateToProps = (state) => {
   return {
-    yardQaList: state.qaReducer.yardQaList,
+    yardQaListReducerProps: state.qaReducer,
   };
 };
 const mapDispatchToProps = {
-  GetYardQaListAction: GetYardQaList,
-  SearchAppointmentAction: SearchAppointment,
+  GetYardQaListAction: getYardQaList,
+  SearchYardQaListAction: searchYardQaList,
 };
 
 export default connect(

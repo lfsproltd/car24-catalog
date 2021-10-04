@@ -24,16 +24,13 @@ const YardQaDetailsComponent = (props) => {
   // Actions
   const {
     ApproveQualityChecksAction,
-    GetLastInspectionDataAction,
     GetYardListingDetailsAction,
-    SetToasterMessageAction,
     GetMasterDataQaImageKeysAction,
+    SetToasterMessageAction,
     AddTaggingAction,
-    listDetailsReducer,
     langTransObj,
     selectedLang,
     masterData,
-    params,
   } = props;
 
   const {
@@ -41,13 +38,17 @@ const YardQaDetailsComponent = (props) => {
     model = "",
     variant = "",
     fuelType = "",
+    schemaVersion = "",
     //createdBy: { uid = "" } = {},
     loc: { name: locName = "" } = {},
     appointmentId = "",
     updatedAt = "",
     data = {},
     assignedTo: { assignedTo = "" } = {},
+    
   } = props.listingDetails.length ? props.listingDetails[0] : {};
+
+  
 
   // This is for label in Different language
   const { labels = {} } = langTransObj || {};
@@ -75,9 +76,29 @@ const YardQaDetailsComponent = (props) => {
 
     setAllocateOpen(true);
   };
+
   const onAllocateClose = () => {
     setAllocateOpen(false);
   };
+
+  useEffect(() => {
+    if (
+      props.listingDetails &&
+      props.listingDetails[0] &&
+      props.listingDetails[0].inspectionStatus === "QC_DONE"
+    ) {
+      setIsSummaryList(true);
+    }
+
+    if (
+      props.listingDetails &&
+      props.listingDetails[0] &&
+      props.listingDetails[0].inspectionStatus !== "ESTIMATED" &&
+      props.listingDetails[0].inspectionStatus !== "QC_DONE"
+    ) {
+      window.location.pathname = "yard-qa";
+    }
+  }, [props.listingDetails]);
 
   const [appointmentDetails, setAppointmentDetails] = useState({});
   const [showHideToggler, setShowHideToggler] = useState(false);
@@ -134,8 +155,9 @@ const YardQaDetailsComponent = (props) => {
     let totlalAcceptableImperfections = 0;
     let searchParams = {
       appointmentId: "",
-      inspectionType: "CATALOG",
+      inspectionType: "YARD",
       version: "all",
+      lang: selectedLang
     };
     let allImages = [];
     let allVideos = [];
@@ -440,24 +462,7 @@ const YardQaDetailsComponent = (props) => {
     }
   };
 
-  useEffect(() => {
-    if (
-      props.listingDetails &&
-      props.listingDetails[0] &&
-      props.listingDetails[0].inspectionStatus === "QC_DONE"
-    ) {
-      setIsSummaryList(true);
-    }
 
-    if (
-      props.listingDetails &&
-      props.listingDetails[0] &&
-      props.listingDetails[0].inspectionStatus !== "ESTIMATED" &&
-      props.listingDetails[0].inspectionStatus !== "QC_DONE"
-    ) {
-      window.location.pathname = "yard-qa";
-    }
-  }, [props.listingDetails]);
 
   const submitAllQcAction = () => {
     let params = {
@@ -978,7 +983,7 @@ const YardQaDetailsComponent = (props) => {
           <div className="row">
             <div className="col-lg-3">
               <div className="form-group bolder-span">
-                <label>{labels["APPOINMENT_ID"]}:</label>
+                <label>{labels["APPOINTMENT_ID"]}:</label>
                 <span>
                   {appointmentDetails?.appointmentId
                     ? " " + appointmentDetails.appointmentId

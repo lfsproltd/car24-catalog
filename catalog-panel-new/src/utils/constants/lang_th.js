@@ -23,12 +23,13 @@ export const lang = {
         WORKSHOP_NAME: "ชื่อเวิร์คช็อป",
         APPOINTMENT_ID: "รหัสนัดหมาย",
         INSPECTION_TYPE: "Inspection Type",
+        INSPECTION_BY: "ตรวจสอบโดย",
         INSPECTION_DATE: "วันที่ตรวจสอบ",
+        NO_IMPERFECTION: "ไม่มีความไม่สมบูรณ์",
         ACCEPTABLE_IMPERFECTION: "ความไม่สมบูรณ์ที่ยอมรับได้",
         NON_ACCEPTABLE_IMPERFECTION: "ความไม่สมบูรณ์ที่ยอมรับไม่ได้",
         TOTAL_ESTIMATES: "ประมาณการทั้งหมด",
         REMAINING_ESTIMATES: "ประมาณการคงเหลือ",
-        NO_WORK_TO_BE_DONE: "ไม่มีงานทำ",
         ACCEPTABLE_IMPERFECTION_REJECT_TEXT : "ความไม่สมบูรณ์ที่ยอมรับได้ได้รับการปฏิเสธสำหรับรหัสนัดหมายนี้ โปรดตรวจสอบอีกครั้งผ่านแอพมือถือ",
         UNACCEPTABLE_IMPERFECTION_SHOW_TO_CUSTOMER : "ความไม่สมบูรณ์ที่ยอมรับไม่ได้ (แสดงต่อลูกค้า)",
         ACCEPTABLE_IMPERFECTION_NOT_SHOWN_TO_CUSTOMER :"ความไม่สมบูรณ์ที่ยอมรับได้ (ไม่แสดงต่อลูกค้า)",
@@ -37,6 +38,8 @@ export const lang = {
         UNACCEPTABLE_IMPERFECTION: "ความไม่สมบูรณ์ที่ยอมรับไม่ได้",
         OTHER: "อื่น",
         ADDITIONAL_PART_TEXT: "ส่วนเพิ่มเติม",
+        ADDITIONAL_PART: "ส่วนเพิ่มเติม",
+        PART_COST: "ค่าอะไหล",
         PART_COST_TEXT: "ค่าอะไหล",
         SET_TAG_AS: "ตั้งแท็กเป็น",
 
@@ -52,12 +55,14 @@ export const lang = {
         EDIT: "แก้ไข",
         RESET: "รีเซ็ต",
 
+        LABOUR_COST:"ค่าแรง",
+
         ESTIMATED_LABOUR_COST: "ค่าแรงโดยประมาณ",
         ADDITIONAL_PART_NAME: "ชื่อชิ้นส่วนเพิ่มเติม",
         ADDITIONAL_PART_COST: "ค่าอะไหล่เพิ่มเติม",
 
-   
-       
+
+
 
         PENDING_ESTIMATE_COST:'ต้นทุนประมาณการทั้งหมด',
         APPROVED_ESTIMATE_COST:'อนุมัติประมาณการต้นทุน',

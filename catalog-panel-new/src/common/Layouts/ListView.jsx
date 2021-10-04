@@ -6,12 +6,16 @@ import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
-import Pagination from "@mui/material/Pagination";
+import  Pagination from "@mui/material/Pagination";
+import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import Paper from "@mui/material/Paper";
 import { LIST_PAGE_SIZE } from "../../utils/constants/values.constants";
 import { visuallyHidden } from "@mui/utils";
+
+import Stack from '@mui/material/Stack';
+
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -98,7 +102,6 @@ export default function ListComp(props) {
   const [page, setPage] = React.useState(0);
 
   const onPageChange = (args, pageNumber) => {
-    pageNumber -= 1;
     if (pageNumber !== page) {
       setPage(pageNumber);
       pageChangeCb && pageChangeCb(pageNumber);
@@ -110,6 +113,11 @@ export default function ListComp(props) {
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
+
+  const addPaginationText = (text) => {
+   //document.getElementsByClassName(".MuiPagination-root").appendChild(text);
+  }
+
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -158,11 +166,39 @@ export default function ListComp(props) {
             </TableBody>
           </Table>
         </TableContainer>
-        <Pagination
+
+        {/* <Stack spacing={2}>
+            <Pagination
+            onChange={onPageChange}
+            count={Math.ceil(totalRecords / LIST_PAGE_SIZE)}
+            page={page + 1}
+            showFirstButton
+            showLastButton
+            />
+           <p>  {Math.ceil(page * LIST_PAGE_SIZE) + 1} - {Math.ceil(totalRecords / LIST_PAGE_SIZE) } of {totalRecords} </p>
+
+      </Stack> */}
+
+      <TablePagination
+      component="p"
+      count={totalRecords}
+      page={page}
+      onPageChange={onPageChange}
+      rowsPerPage={LIST_PAGE_SIZE}
+      onRowsPerPageChange={onPageChange}
+      rowsPerPageOptions={[]}
+    />
+
+
+        {/* <Pagination
           onChange={onPageChange}
           count={Math.ceil(totalRecords / LIST_PAGE_SIZE)}
           page={page + 1}
-        />
+        /> */}
+
+
+
+
       </Paper>
     </Box>
   );

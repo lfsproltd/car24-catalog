@@ -238,6 +238,7 @@ const EstimateDetailsComponent = (props) => {
                     SetEstimateFormDataAction={SetEstimateFormDataAction}
                     masterData={masterData}
                     SaveEstimates={SaveEstimates}
+                    langTransObj={langTransObj}
                   />
                 );
               }

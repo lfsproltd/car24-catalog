@@ -1,17 +1,14 @@
-import React, {useEffect, useRef, useState} from "react";
-import { Link } from "react-router-dom";
+import React, {createRef, useEffect, useState} from "react";
+import {Link} from "react-router-dom";
 import Paper from "@mui/material/Paper";
 
 import "./estimateDetailsStyles.css";
-import AlertBox from "../../common/showAlert";
-import loaderImg from "../../assets/img/loader.png";
-import EstimateDetailsForm from "../estimateDetails/EstimateDetailsForm";
 import {useReactToPrint} from "react-to-print";
 import WorkorderPrintComponent from "./workorderPrintComponent";
 
 const WorkOrderDetailsComponent = (props) => {
   const {
-    workOrderDetailsProps: { workOrderDetails = [], masterData } = {},
+    workOrderDetailsProps: { inspectionDetails = [], masterData } = {},
     langTransObj,
     selectedLang
   } = props;
@@ -21,14 +18,6 @@ const WorkOrderDetailsComponent = (props) => {
 
   const [nonAccImperfection, setNonAccImperfection] = useState("");
   const [accImperfection, setAccImperfection] = useState("");
-
-  const [totalEstimates, setTotalEstimates] = useState("");
-  const [remainingEstimates, setRemainingEstimates] = useState("");
-  const [totalNoWorkToBeDone, setTotalNoWorkToBeDone] = useState("");
-  const [acceptableImperfectionRejected, setAcceptableImperfectionRejected] =
-    useState(false);
-  const [estimatesFieldsInitial, setEstimatesFieldsInitial] = useState({});
-
 
   const {
     make = "",
@@ -41,12 +30,12 @@ const WorkOrderDetailsComponent = (props) => {
     updatedAt = "",
     formatedUpdatedAt= "",
     data = {},
-  } = workOrderDetails.length ? workOrderDetails[0] : {};
+  } = inspectionDetails.length ? inspectionDetails[0] : {};
 
   useEffect(() => {
     let totalNonAcceptableImperfections = 0;
     let totalAcceptableImperfections = 0;
-    if (workOrderDetails?.length && data.checkpoints) {
+    if (inspectionDetails?.length && data.checkpoints) {
       Object.keys(data.qualityChecks).map((item) => {
         if (data.qualityChecks[item].invalidated === false) {
           if (data.checkpoints[item].ok === false) {
@@ -61,127 +50,23 @@ const WorkOrderDetailsComponent = (props) => {
     }
     setNonAccImperfection(totalNonAcceptableImperfections);
     setAccImperfection(totalAcceptableImperfections);
-
-    if (workOrderDetails?.length && workOrderDetails[0].data) {
-      let totalEstimatesToBeFilled = 0,
-        totalEstimatesFilled = 0,
-        totalEstimatesRejected = 0,
-        totalNoWorkToBeDone = 0,
-        estimateFields = {};
-      Object.keys(data.qualityChecks).forEach((item) => {
-        if (
-          data?.qualityChecks[item]?.invalidated ===
-            false &&
-          data.checkpoints[item]?.ok === false
-        ) {
-          if (
-            data?.estimates[item]?.invalidated === false
-          ) {
-            estimateFields[item] = {
-              labourCost:
-                data.estimates[item].labourCost >= 0
-                  ? data.estimates[item].labourCost
-                  : null,
-              parts: data.estimates[item].parts
-                ? data.estimates[item].parts
-                : [{ name: "", cost: null }],
-            };
-            if (
-              !data?.checkpoints[item]?.refurbishmentChoices
-            ) {
-              estimateFields[item] = {
-                labourCost: null,
-                parts: [{ name: "", cost: null }],
-              };
-            }
-          } else {
-            estimateFields[item] = {
-              labourCost: null,
-              parts: [{ name: "", cost: null }],
-            };
-          }
-        }
-        if (estimateFields?.[item]?.parts?.length === 0) {
-          estimateFields[item].parts = [
-            {
-              name: estimateFields[item]?.parts[0]?.name
-                ? estimateFields[item]?.parts[0]?.name
-                : "",
-              cost: estimateFields[item]?.parts[0]?.cost
-                ? estimateFields[item]?.parts[0]?.cost
-                : null,
-            },
-          ];
-        }
-        //check whether acceptable imperfection is rejected
-        if (
-          data.qualityChecks[item]?.invalidated === false &&
-          data.checkpoints[item]?.ok === true &&
-          data.checkpoints[item]?.choices.length &&
-          data.qualityChecks[item]?.status === "REJECTED"
-        ) {
-          setAcceptableImperfectionRejected(true);
-        }
-
-        //count of no work to be done
-        if (
-          data.checkpoints[item]?.ok === false &&
-          data?.qualityChecks[item]?.reason ===
-            "NO_WORK_TO_BE_DONE" &&
-          data?.qualityChecks[item]?.status === "APPROVED"
-        ) {
-          totalNoWorkToBeDone += 1;
-        }
-
-        if (
-          data.checkpoints[item]?.ok === false &&
-          data?.qualityChecks[item]?.reason !==
-            "NO_WORK_TO_BE_DONE"
-        ) {
-          totalEstimatesToBeFilled += 1;
-        }
-
-        if (
-          data?.estimates[item] &&
-          data?.estimates[item]?.invalidated === false
-        ) {
-          totalEstimatesFilled += 1;
-        }
-
-        if (
-          data?.estimates[item] &&
-          data?.estimates[item]?.invalidated === false &&
-          data?.qualityChecks[item]?.status === "REJECTED"
-        ) {
-          totalEstimatesRejected += 1;
-        }
-      });
-      setEstimatesFieldsInitial({ ...estimateFields });
-      setTotalNoWorkToBeDone(totalNoWorkToBeDone);
-      setTotalEstimates(totalEstimatesToBeFilled);
-      setRemainingEstimates(
-        totalEstimatesToBeFilled -
-          +totalEstimatesFilled +
-          totalEstimatesRejected
-      );
-    }
-  }, [workOrderDetails]);
+  }, [inspectionDetails]);
 
 
   return (
     <div className="wrapper">
           <Link to="/work-order"> Back </Link>
-          <PrintComponent data={workOrderDetails[0]}  accImperfection={accImperfection} nonAccImperfection={nonAccImperfection}/>
+          <PrintComponent data={inspectionDetails[0]}  accImperfection={accImperfection} nonAccImperfection={nonAccImperfection} langTransObj={langTransObj}/>
           <Paper className="paper" elevation={3}>
             <div className="details-wrapper">
               <div className="desc-span">
-            <span className="car-desc-title">
-              {make} {model}
-            </span>{" "}
-                {variant} | {fuelType}
+                <span className="car-desc-title">
+                  {make} {model}
+                </span>{" "}
+                    {variant} | {fuelType}
               </div>
               <div className="desc-span">
-                <span className="desc-title">{labels['APP_ID']}</span>
+                <span className="desc-title">{labels['INSPECTION_BY']}</span>
                 {uid}
               </div>
               <div className="desc-span">
@@ -204,26 +89,86 @@ const WorkOrderDetailsComponent = (props) => {
                 <span className="desc-title">{labels['NON_ACCEPTABLE_IMPERFECTION']}</span>
                 {nonAccImperfection}
               </div>
-              <div className="desc-span">
-                <span className="desc-title">{labels['TOTAL_ESTIMATES']}</span>
-                {totalEstimates}
-              </div>
-              <div className="desc-span">
-                <span className="desc-title">{labels['REMAINING_ESTIMATES']}</span>
-                {remainingEstimates}
-              </div>
-              <div className="desc-span">
-                <span className="desc-title">{labels['NO_WORK_TO_BE_DONE']}</span>
-                {totalNoWorkToBeDone}
-              </div>
-              <div className="last-div">
-                {acceptableImperfectionRejected ? (
-                    <span style={{ color: "#F34500" }}>
-                {labels['ACCEPTABLE_IMPERFECTION_REJECT_TEXT']}
-              </span>
-                ) : null}
-              </div>
+
             </div>
+            {/* photo section here -  */}
+            {inspectionDetails.data?.qualityChecks ? Object.keys(inspectionDetails.data.qualityChecks).map((item, index) => {
+              return (
+                  <>
+                    {inspectionDetails.data.qualityChecks[item]?.invalidated === false &&
+                    inspectionDetails.data.checkpoints[item]?.ok === false &&
+                    (inspectionDetails.data.qualityChecks[item]?.reason !== "NO_WORK_TO_BE_DONE" &&
+                        inspectionDetails.data.qualityChecks[item]?.status === "APPROVED") &&
+                    (
+                        <div className="container-box-card mt-4">
+                          <label className="label-top">{item + " "}</label>
+                          <label className="label-top status-right-aligned">{inspectionDetails.data.qualityChecks[item].status.toLowerCase()}</label>
+                          <div className="shaded-border"></div>
+                          <div className="info-container">
+                            <div className="row my-2 mx-2">
+                              <div className="col-lg-6">
+                                {inspectionDetails.data.checkpoints[item] && inspectionDetails.data.checkpoints[item].ok === false &&
+                                inspectionDetails.data.checkpoints[item].choices.length  > 0 &&(
+                                    <div className="col-lg-12 light-label dark-span">
+                                      <h6>Unacceptable Imperfections</h6>
+                                      {inspectionDetails.data.checkpoints[item].choices.map((choice)=>{
+                                        return(!choice.acceptable ? choice.choice + ' | ' : '')
+                                      })}
+                                    </div>
+                                )}
+
+                                {inspectionDetails.data.checkpoints[item].refurbishmentChoices.length  > 0 && (
+                                    <div className="col-lg-12 light-label dark-span">
+                                      <h6 className="work-to-done">Work to be done</h6>
+                                      {inspectionDetails.data.checkpoints[item].refurbishmentChoices.map((choice,index)=>{
+                                        return(index+1 +". "+ choice.refurbishment + ' ')
+                                      })}
+                                    </div>
+                                )}
+
+                                <div className="col-lg-12 light-label dark-span">
+                                  <h6 className="work-to-done">Estimated labour cost</h6>
+                                  <input type="text" className="form-control"
+                                         value={inspectionDetails.data.estimates && inspectionDetails.data.estimates[item] &&
+                                         inspectionDetails.data.estimates[item].invalidated === false &&
+                                         (inspectionDetails.data.estimates[item].labourCost ||
+                                             inspectionDetails.data.estimates[item].labourCost === 0)?
+                                             inspectionDetails.data.estimates[item].labourCost : null}
+                                         disabled={inspectionDetails.data.qualityChecks[item].status === "APPROVED"}/>
+                                </div>
+
+                              </div>
+                              <div className="col-lg-6">
+                                {inspectionDetails.data.estimates && inspectionDetails.data.estimates[item] &&
+                                inspectionDetails.data.estimates[item].invalidated === false &&
+                                inspectionDetails.data.estimates[item].parts &&
+                                inspectionDetails.data.estimates[item].parts.map((part,index2)=>{
+                                  return(
+                                      <div className="row">
+                                        <div className="col-lg-6 light-label dark-span">
+                                          <h6>Additional part name</h6>
+                                          <input type="text" className="form-control"
+                                                 value={part && part.name ? part.name : null}
+                                                 disabled={inspectionDetails.data.qualityChecks[item].status === "APPROVED"}/>
+                                        </div>
+                                        <div className="col-lg-6 light-label dark-span">
+                                          <h6>Additional part cost</h6>
+                                          <input type="text" className="form-control"
+                                                 value={part && (part.cost || part.cost === 0) ? part.cost : null}
+                                                 disabled={inspectionDetails.data.qualityChecks[item].status === "APPROVED"}/>
+                                        </div>
+                                      </div>
+                                  )
+                                })}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    )}
+                  </>
+                )
+                })
+                : (null)}
           </Paper>
     </div>
   );
@@ -233,7 +178,7 @@ export default WorkOrderDetailsComponent;
 
 export const PrintComponent = (props) => {
   const [printData,setPrintData] = useState(false);
-  const componentRef = useRef();
+  const componentRef = createRef();
   const handlePrint = useReactToPrint({
     content: () => componentRef.current
   });
@@ -241,12 +186,19 @@ export const PrintComponent = (props) => {
     if(props && props.data){
       setPrintData(true)
     }
+    if(props && props.langTransObj) {
+
+    }
   },[props]);
   return (
-      <div>
+      <div align="right">
         <button onClick={handlePrint} className="print-button-work-order">Print{printData}</button>
         <div hidden={true}>
-          <WorkorderPrintComponent ref={componentRef} data={props.data} accImperfection={props.accImperfection} nonAccImperfection={props.nonAccImperfection}/>
+          <WorkorderPrintComponent ref={componentRef}
+                                   data={props.data}
+                                   accImperfection={props.accImperfection}
+                                   nonAccImperfection={props.nonAccImperfection}
+                                   langTransObj={props.langTransObj}/>
         </div>
       </div>
   );

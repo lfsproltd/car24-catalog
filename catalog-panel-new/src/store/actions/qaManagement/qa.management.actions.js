@@ -7,6 +7,10 @@ import {
   GET_MASTER_DATA_QC_IMAGES_KEYS,
   GET_LAST_INSPECTION_DATA,
   APPROVE_REJECT_QUALITY_CHECK,
+  GET_WORKSHOP_QA_LISTING,
+  GET_WORKSHOP_QA_LISTING_COUNT,
+  GET_WORKSHOP_QA_LISTING_DETAILS,
+  GET_INSPECTION_SUMMARY
 } from "../../types";
 
 import { AlertType } from "../../../utils/constants/values.constants";
@@ -18,7 +22,7 @@ import { config } from "./../../../utils/constants/api.constants";
 import { setToasterMessage } from "./../commonAction/common.action";
 import { SetErrorAlert } from "../../actions/globalActions";
 
-export const getYardQaListDetails =
+export const getYardQaListDetailsOLd =
   (params = {}, selectedLang) =>
   (dispatch) => {
     let url =
@@ -41,6 +45,47 @@ export const getYardQaListDetails =
         selectedLang
       )(dispatch);
     });
+  };
+
+
+export const getYardQaListDetails = (params = {}, selectedLang) =>
+
+  async (dispatch) => {
+
+    dispatch({
+      type: "LOADING",
+      payload: true
+    });
+
+    let url =
+    config.api.workshop.host +
+    config.api.workshop.inspection +
+    "/" +
+    convertObjectToParams(params) +
+    "&lang=" +
+    selectedLang;
+
+    const data = await axiosService.get(url);
+    dispatch({
+      type: GET_YARD_LISITNG_DETAILS_DATA,
+      payload: data && data.data,
+    });
+
+    const { data: apiRes } = data;
+    const { schemaVersion = "" } = apiRes?.[0] || {};
+
+    dispatch(
+      GetMasterDataQaImageKeysWithVersion(
+        schemaVersion,
+        selectedLang
+      )
+    )
+
+    dispatch({
+      type: "LOADING",
+      payload: false
+    });
+
   };
 
 export const getYardQaLisDetails_OLDCODE =
@@ -70,6 +115,7 @@ export const getYardQaLisDetails_OLDCODE =
       );
     }
   };
+
 
 export const approveQualityChecks =
   (dataObj, appointmentId, msg, requestFor) => async (dispatch) => {
@@ -140,34 +186,38 @@ export const getLastInspectionData =
     }
   };
 
-export const getMasterDataQaImageKeysOld =
-  (params = {}) =>
-  async (dispatch) => {
-    dispatch({ type: LOADER_HANDLER });
-    let url =
-      config.api.workshop.host +
-      config.api.workshop.catalog +
-      config.api.workshop.master;
-    try {
-      const data = await axiosService.get(url);
-      dispatch({
-        type: GET_MASTER_DATA_QC_IMAGES_KEYS,
-        payload: data.data.qaTopImages,
-      });
-      dispatch({ type: GET_MASTER_DATA_CHECKPOINTS, payload: data.data });
-    } catch (e) {
-      dispatch(
-        setToasterMessage({
-          toasterMessage: "No images found",
-          showToaster: true,
-          toasterType: AlertType.ERROR,
-        })
-      );
-    }
-  };
+export const GetMasterDataQaImageKeysWithVersion =
+(version, selectedLang)  =>
+async (dispatch) => {
+  dispatch({ type: LOADER_HANDLER });
+  let url =
+    config.api.workshop.host +
+    config.api.workshop.catalog +
+    config.api.workshop.master +
+    "?schemaVersion=" +
+    version +
+    "&lang=" +
+    selectedLang;;
+  try {
+    const data = await axiosService.get(url);
+    dispatch({
+      type: GET_MASTER_DATA_QC_IMAGES_KEYS,
+      payload: data.data.qaTopImages,
+    });
+    dispatch({ type: GET_MASTER_DATA_CHECKPOINTS, payload: data.data });
+  } catch (e) {
+    dispatch(
+      setToasterMessage({
+        toasterMessage: "No images found",
+        showToaster: true,
+        toasterType: AlertType.ERROR,
+      })
+    );
+  }
+};
 
 //Duplicate
-export const GetMasterDataQaImageKeysWithVersion =
+export const GetMasterDataQaImageKeysWithVersionNotUsed =
   (version, selectedLang) => async (dispatch) => {
     let url =
       config.api.workshop.host +
@@ -300,3 +350,188 @@ export const addTagging =
       );
     }
   };
+
+
+  // WorkshopQA section
+
+export const getWorkshopListing =
+(params = {}, lang) =>
+async (dispatch) => {
+  dispatch({ type: LOADER_HANDLER });
+  let url =
+    config.api.workshop.host +
+    config.api.workshop.inspection +
+    "/" +
+    config.api.workshop.inspectionType +
+    `${
+      params.hasOwnProperty("page") && params.hasOwnProperty("size")
+        ? "&offset=" + +params.page * +params.size + "&limit=" + params.size
+        : ""
+    }&lang=${lang}`;
+  // `${params && params.page && params.size ? "inspectionStatus=ESTIMATED,INSPECTED&offset="+params.page+"&limit="+params.size : ''}`; // for production
+  try {
+    const data = await axiosService.get(url);
+    
+    dispatch({ type: GET_WORKSHOP_QA_LISTING, payload: data.data });
+
+    dispatch(getWorkshopListingCount("workshop",  "", lang))
+
+  } catch (e) {
+    dispatch(
+      setToasterMessage({
+        toasterMessage: "Something went wrong",
+        showToaster: true,
+        toasterType: AlertType.ERROR,
+      })
+    );
+  }
+};
+
+
+export const getWorkshopListingCount =
+  (inspectionTypeCount = "", searchValue = "", lang) =>
+  async (dispatch) => {
+    dispatch({ type: LOADER_HANDLER });
+    let url =
+      config.api.workshop.host +
+      config.api.workshop.inspection +
+      config.api.workshop.count +
+      `${
+        inspectionTypeCount === "yard"
+          ? "?inspectionType=CATALOG&inspectionStatus=ESTIMATED&locationType=FULFILLMENT_CENTER"
+          : [
+              inspectionTypeCount === "inspectionhistory"
+                ? "?inspectionType=CATALOG&inspectionStatus=DONE,ESTIMATED,APPROVED,REJECTED&version=all"
+                : "?inspectionType=CATALOG&inspectionStatus=ESTIMATED&locationType=SERVICE_CENTER",
+            ]
+      }` +
+      `${
+        searchValue !== "%" && searchValue !== ""
+          ? "&appointmentIdRegex=" + encodeURIComponent(searchValue)
+          : ""
+      }`;
+    try {
+      const data = await axiosService.get(url);
+      dispatch({ type: GET_WORKSHOP_QA_LISTING_COUNT, payload: data.data });
+    } catch (e) {
+      dispatch(
+        setToasterMessage({
+          toasterMessage: "Something went wrong",
+          showToaster: true,
+          toasterType: AlertType.ERROR,
+        })
+      );
+    }
+  };
+
+export const SearchWorkshopQaList =
+(searchValue, lang) => async (dispatch) => {
+  let url =
+    config.api.workshop.host +
+    config.api.workshop.inspection +
+    "/" +
+    config.api.workshop.inspectionType +
+    "&appointmentIdRegex=" +
+    encodeURIComponent(searchValue) +
+    `&lang=${lang}`;
+   axiosCall({ url, dispatch, method: "get", type: GET_WORKSHOP_QA_LISTING }).then(
+    () => {
+      getWorkshopListingCount("workshop", searchValue, lang)(dispatch);
+    }
+  );
+};
+
+
+export const getWorkshopQaListingDetails =
+  (params = {}, selectedLang) =>
+  async (dispatch) => {
+    dispatch({ type: LOADER_HANDLER });
+
+    dispatch({
+      type: "LOADING",
+      payload: true
+    });
+
+    let url =
+      config.api.workshop.host +
+      config.api.workshop.inspection +
+      "/" +
+      convertObjectToParams(params);
+    try {
+      const data = await axiosService.get(url);
+      dispatch({
+        type: GET_WORKSHOP_QA_LISTING_DETAILS,
+        payload: data && data.data,
+      });
+
+    const { data: apiRes } = data;
+    const { schemaVersion = "", version = 0} = apiRes?.[0] || {};
+
+    dispatch(
+      GetMasterDataQaImageKeysWithVersion(
+        schemaVersion,
+        selectedLang
+      )
+    )
+
+
+    let paramsForInspectionsummary = {
+      appointmentId: params['appointmentId'],
+      version: version,
+      lang: selectedLang
+    };
+
+    dispatch(getInspectionSummary(paramsForInspectionsummary))
+
+
+    dispatch({ type: GET_LAST_INSPECTION_DATA, payload: apiRes?.[1] });
+
+
+    dispatch({
+      type: "LOADING",
+      payload: false
+    });
+
+
+    } catch (e) {
+      dispatch(
+        setToasterMessage({
+          toasterMessage: "Something went wrong",
+          showToaster: true,
+          toasterType: AlertType.ERROR,
+        })
+      );
+    }
+  };
+
+
+  export const getInspectionSummary =
+  (params = {}) =>
+  async (dispatch) => {
+
+    dispatch({ type: LOADER_HANDLER });
+
+    let url =
+      config.api.workshop.host +
+      config.api.workshop.inspectionSummary +
+      "/" +
+      convertObjectToParams(params);
+    try {
+      const data = await axiosService.get(url);
+
+      dispatch({ type: GET_INSPECTION_SUMMARY, payload: data.data });
+
+    } catch (e) {
+      dispatch(
+        setToasterMessage({
+          toasterMessage:
+            e && e.response && e.response.data && e.response.data.message
+              ? e.response.data.message
+              : "No images found",
+          showToaster: true,
+          toasterType: AlertType.ERROR,
+        })
+      );
+    }
+  };
+

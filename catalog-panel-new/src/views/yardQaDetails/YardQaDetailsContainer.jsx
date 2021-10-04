@@ -19,14 +19,14 @@ const YardQaDetailsContainer = (props) => {
     GetYardListingDetailsAction,
     ApproveQualityChecksAction,
     GetLastInspectionDataAction,
-    GetMasterDataQaImageKeysAction,
+    GetMasterDataQaImageKeysWithVersionAction,
     SetToasterMessageAction,
     langTransObj,
     selectedLang,
     AddTaggingAction,
   } = props;
 
-  const getYardDetailsCall = () => {
+  const  getYardDetailsCall = () => {
     let appointmentId = props?.match?.params?.appointmentId;
 
     let params = {
@@ -34,28 +34,38 @@ const YardQaDetailsContainer = (props) => {
       inspectionType: "YARD",
       version: "all", //TODO: Check on version
     };
-
-    GetYardListingDetailsAction &&
-      GetYardListingDetailsAction(params, selectedLang);
+    GetYardListingDetailsAction && GetYardListingDetailsAction(params, selectedLang);
   };
-  useEffect(
-    (_) => {
-      let version = props?.match?.params?.version;
-      getYardDetailsCall();
 
-      // GetMasterDataQaImageKeysAction &&
-      //GetMasterDataQaImageKeysAction(version, selectedLang) //TODO: Check if Version is required here
+  useEffect(
+    (_) => {    
+      getYardDetailsCall();
     },
     [selectedLang]
   );
 
-  //TODO: Change Alert Box and remove dependancy of KendoUI
+  // useEffect(
+  //   (_) => {
+  //     const {
+  //       schemaVersion = "",        
+  //     } = props.listingDetails.length ? props.listingDetails[0] : {};
 
+  //     schemaVersion!= "" && GetMasterDataQaImageKeysWithVersionAction &&
+  //       GetMasterDataQaImageKeysWithVersionAction(schemaVersion, selectedLang) //TODO: Check if Version is required here
+     
+  //   },
+  //   [props.listingDetails]
+  // );
+
+  //TODO: Change Alert Box and remove dependancy of KendoUI
   return (
+    
     <div className="wrapper">
-      {/* {props.showToaster && <AlertBox ShowAlert={props.showToaster} message={props.toasterMessage} closeToaster={props.closeToaster} type={props.toasterType} />}
+      
+      {/* { {props.showToaster && <AlertBox ShowAlert={props.showToaster} message={props.toasterMessage} closeToaster={props.closeToaster} type={props.toasterType} />}
     {props.isProcessing && <div className="loaderSection"> <img src={loaderImg} alt="loader" /></div>}
-     */}
+     } */}
+
       <YardQaDetailsComponent
         // Only send required props to Component
         listingDetails={props.listingDetails}
@@ -67,10 +77,11 @@ const YardQaDetailsContainer = (props) => {
         masterData={props.masterData}
         ApproveQualityChecksAction={ApproveQualityChecksAction}
         GetLastInspectionDataAction={GetLastInspectionDataAction}
-        GetYardListingDetailsAction={getYardDetailsCall}
+        GetYardListingDetailsAction={GetYardListingDetailsAction}
         SetToasterMessageAction={SetToasterMessageAction}
-        GetMasterDataQaImageKeysAction={GetMasterDataQaImageKeysAction}
+        GetMasterDataQaImageKeysAction={GetMasterDataQaImageKeysWithVersionAction}
         langTransObj={langTransObj}
+        selectedLang={selectedLang}
         AddTaggingAction={AddTaggingAction}
       />
     </div>
@@ -95,7 +106,7 @@ const mapDispatchToProps = {
   GetYardListingDetailsAction: getYardQaListDetails,
   ApproveQualityChecksAction: approveQualityChecks,
   GetLastInspectionDataAction: getLastInspectionData,
-  GetMasterDataQaImageKeysAction: GetMasterDataQaImageKeysWithVersion,
+  GetMasterDataQaImageKeysWithVersionAction: GetMasterDataQaImageKeysWithVersion,
 };
 
 export default connect(

@@ -1108,129 +1108,129 @@ button:disabled {
   background-color: #D03636;
 }
 
-/* custom css */	
-.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select{	
-  max-height: 50px;	
-}	
-.language-select fieldset{	
-  display: none;	
-}	
-.language-select .fa-bars{	
-  color: #fff;	
-  font-size: 24px;	
-} 	
-.language-select{	
-  display: flex;	
-  vertical-align: middle;	
-  align-items: center;	
-}	
-.language-select div#demo-simple-select{	
-  color: #fff!important;	
-  padding: 0px;	
-}	
-.language-select svg{	
-  color: #fff;	
-}	
-.main-content-box{	
-  height: 100%;	
-  background: #fff;	
-  padding: 20px;	
-  margin: 0px 18px;	
-  border-radius: 3px;	
-  overflow: auto;	
-}	
-.appointment-search-box{	
-  outline: none;	
-    border: 2px solid #f6f6f6;	
-    display: block;	
-    width: 100%;	
-    padding: 10px;	
-    border-radius: 5px;	
-    margin-bottom: 10px;	
-}	
-table {	
-  border-right-color: #ffffff;	
-  font-size: 18px;	
-  border-collapse: collapse; 	
-}	
-th, td {	
-  padding: 10px 24px!important;	
-  text-align: left;	
-  border: 1px solid #ddd;	
-}	
-th a, td a {	
-  text-decoration: none;	
-}	
-tbody tr:nth-child(odd){	
-  background-color: #f8f9fa;	
-}	
-tbody tr:nth-child(even){	
-  background-color: #e9ecef;	
-}	
-.css-11bfvty-MuiToolbar-root-MuiTablePagination-toolbar{	
-  background: #e9ecef;	
-}	
-.css-1mxz8qt-MuiPaper-root{	
-  box-shadow: none!important;	
-}	
-.MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows.css-levciy-MuiTablePagination-displayedRows{	
-  margin: 0px!important;	
-}	
-#sidebar li a, .sidebar-header h3 a{	
-  text-decoration: none;	
-}	
-.MuiTablePagination-root {	
-  border: 1px solid #ddd;	
-  border-top: none;	
-}	
-/* card page css */	
-.desc-span{	
-  display: flex;	
-  flex-direction: column;	
-  padding:10px;	
-  width: 33.3%;	
-  margin: 0px!important;	
-}   	
-.fields-wrapper {	
-  margin: 15px 0px;	
-}	
-.col-lg-12.light-label.dark-span {	
-  margin: 20px 0px;	
-}	
-@media(max-width:991px){	
-  .desc-span{	
-    margin: 0px;	
-    flex-direction: column;	
-    white-space: normal;	
-    word-break: break-all;	
-  }	
- 	
-}	
-@media(max-width:767px){	
-  #content{	
-    padding-left: 0px;	
-  }	
-  .headerSection{	
-    width: 100%;	
-  }	
-  #sidebar.hide{	
-    display: none;	
-  }	
-  #sidebar.show{	
-    display: block;	
-  }	
-  .desc-span{	
-    width: 100%;	
-  }	
-  .main-content-box{	
-    padding: 10px;	
-    margin: 0px 5px;	
-  }	
-  .form-title-status{	
-    margin-right: 0px;	
-    max-height: 35px;	
-  }	
-}	
+/* custom css */
+.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.MuiSelect-select{
+  max-height: 50px;
+}
+.language-select fieldset{
+  display: none;
+}
+.language-select .fa-bars{
+  color: #fff;
+  font-size: 24px;
+}
+.language-select{
+  display: flex;
+  vertical-align: middle;
+  align-items: center;
+}
+.language-select div#demo-simple-select{
+  color: #fff!important;
+  padding: 0px;
+}
+.language-select svg{
+  color: #fff;
+}
+.main-content-box{
+  height: 100%;
+  background: #fff;
+  padding: 20px;
+  margin: 0px 18px;
+  border-radius: 3px;
+  overflow: auto;
+}
+.appointment-search-box{
+  outline: none;
+    border: 2px solid #f6f6f6;
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+table {
+  border-right-color: #ffffff;
+  font-size: 18px;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 10px 24px!important;
+  text-align: left;
+  border: 1px solid #ddd;
+}
+th a, td a {
+  text-decoration: none;
+}
+tbody tr:nth-child(odd){
+  background-color: #f8f9fa;
+}
+tbody tr:nth-child(even){
+  background-color: #e9ecef;
+}
+.css-11bfvty-MuiToolbar-root-MuiTablePagination-toolbar{
+  background: #e9ecef;
+}
+.css-1mxz8qt-MuiPaper-root{
+  box-shadow: none!important;
+}
+.MuiTablePagination-selectLabel, .MuiTablePagination-displayedRows.css-levciy-MuiTablePagination-displayedRows{
+  margin: 0px!important;
+}
+#sidebar li a, .sidebar-header h3 a{
+  text-decoration: none;
+}
+.MuiTablePagination-root {
+  border: 1px solid #ddd;
+  border-top: none;
+}
+/* card page css */
+.desc-span{
+  display: flex;
+  flex-direction: column;
+  padding:10px;
+  width: 33.3%;
+  margin: 0px!important;
+}
+.fields-wrapper {
+  margin: 15px 0px;
+}
+.col-lg-12.light-label.dark-span {
+  margin: 20px 0px;
+}
+@media(max-width:991px){
+  .desc-span{
+    margin: 0px;
+    flex-direction: column;
+    white-space: normal;
+    word-break: break-all;
+  }
+
+}
+@media(max-width:767px){
+  #content{
+    padding-left: 0px;
+  }
+  .headerSection{
+    width: 100%;
+  }
+  #sidebar.hide{
+    display: none;
+  }
+  #sidebar.show{
+    display: block;
+  }
+  .desc-span{
+    width: 100%;
+  }
+  .main-content-box{
+    padding: 10px;
+    margin: 0px 5px;
+  }
+  .form-title-status{
+    margin-right: 0px;
+    max-height: 35px;
+  }
+}
 
 .alert-modal{
   position: fixed;

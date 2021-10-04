@@ -25,16 +25,16 @@
     margin-right: 23px;
 }
 
-.photos-slider{	
-    margin-top: 10px;	
-    max-height: 325px;	
-    overflow: hidden;	
-    object-fit: cover;	
-    border: 2px solid #ddd;	
-    max-width: 306px;	
-    border-radius: 2px;	
-    min-height: 325px;	
-}	
+.photos-slider{
+    margin-top: 10px;
+    max-height: 325px;
+    overflow: hidden;
+    object-fit: cover;
+    border: 2px solid #ddd;
+    max-width: 306px;
+    border-radius: 2px;
+    min-height: 325px;
+}
 
 .photo-slider-image{
     width: 325px;

@@ -5,27 +5,30 @@ import {GET_YARD_QA_LIST, GET_WORKSHOP_QA_LISTING, GET_WORKSHOP_QA_LISTING_DETAI
     GET_YARD_LISITNG_DATA,GET_YARD_LISITNG_DETAILS_DATA,
     GET_INSPECTION_HISTORY_LISTING,GET_INSPECTION_HISTORY_LISTING_DETAILS,
     GET_MASTER_DATA_CHECKPOINTS,GET_ESTIMATE_LISTING,GET_ESTIMATE_LISTING_DETAIL,
-    GET_INSPECTION_SUMMARY
+    GET_INSPECTION_SUMMARY, GET_YARD_QA_LIST_COUNT
     }  from "../../types";
 
 const initialState = {
     //New Added
     yardQaList: [],
 
+    workshopQaListingCount: 0,
+    workshopQaListing: [],
+
     showToaster: false,
     toasterMessage: '',
     toasterType: '',
     isProcessing: true,
-    qaListing:[],
+    qaListing:[], // To be removed
     yardListing:[],
     qaListingDetails:[],
     yardListingDetails:[],
-    qaListingCount:0,
+    qaListingCount:0, // To be removed
     lastInspectionData:[],
     qaTopImagesKeys:[],
     inspectionHistoryListing:[],
     inspectionHistoryListingDetails:[],
-    masterData:[],
+    masterData: {categories: {}, checkpoints:{}, qaTopImages:[]},
     estimatesListing:[],
     estimatesListingDetail:[],
     inspectionSummary:[]
@@ -37,9 +40,19 @@ const QaReducer = (state = initialState, action) =>{
         case GET_YARD_QA_LIST:{
             return {
               ...state,
+              isProcessing:true,
               yardQaList: action.payload,
+              isProcessing:false,
             }
         }
+
+        case GET_YARD_QA_LIST_COUNT :
+            return {
+                ...state,
+                yardQaListingCount:action.payload
+            }
+
+            
         case GET_INSPECTION_SUMMARY:{
             return {
                 ...state,
@@ -86,7 +99,8 @@ const QaReducer = (state = initialState, action) =>{
                 yardListingDetails:action.payload,
                 isProcessing:false
             }
-            
+
+        
         case GET_YARD_LISITNG_DATA:
             return {
                 ...state,
@@ -120,14 +134,15 @@ const QaReducer = (state = initialState, action) =>{
         case GET_WORKSHOP_QA_LISTING:
         return {
             ...state,
-            qaListing:action.payload,
+            workshopQaListing:action.payload,
             isProcessing:false
         }
         case GET_WORKSHOP_QA_LISTING_COUNT :
             return {
                 ...state,
-                qaListingCount:action.payload
+                workshopQaListingCount:action.payload
             }
+            
         case APPROVE_REJECT_QUALITY_CHECK:
             return {
                 ...state,

@@ -5,7 +5,6 @@ import { LIST_PAGE_SIZE } from "../../utils/constants/values.constants";
 import {
   GetEstimatesList,
   SearchAppointment,
-  // searchAppointment,
 } from "../../store/actions/estimateActions";
 
 const EstimateListContainer = (props) => {
@@ -49,9 +48,7 @@ const mapStateToProps = (state) => {
   };
 };
 const mapDispatchToProps = {
-  // setToasterMessage,
   GetEstimatesListAction: GetEstimatesList,
-  // getEstimatesListingCount,
   SearchAppointmentAction: SearchAppointment,
 };
 

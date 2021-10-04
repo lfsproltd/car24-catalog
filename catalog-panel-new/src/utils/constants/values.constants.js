@@ -161,4 +161,4 @@ export const STOCK_OUT_FLOW = {
   C2B_STOCK_OUT_FLOW: 'C2B_STOCK_OUT_FLOW'
 };
 
-export const LIST_PAGE_SIZE = 2;
+export const LIST_PAGE_SIZE = 10;

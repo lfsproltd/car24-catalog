@@ -6,22 +6,23 @@ export default class WorkorderPrintComponent extends React.Component {
         this.state = {
             lists:[],
             nonAccImperfection:0,
-            accImperfection:0
+            accImperfection:0,
+            langTransObj:{labels: {}}
         }
-        this.nonAccImperfection = this.props.nonAccImperfection;
-        this.accImperfection = this.props.accImperfection;
+        this.langTransObj={labels: {}}
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log('componentWillReceiveProps', nextProps);
         if (this.props !== nextProps) {
             this.setState({
                 lists:nextProps.data,
                 nonAccImperfection:nextProps.nonAccImperfection,
-                accImperfection:nextProps.accImperfection
+                accImperfection:nextProps.accImperfection,
+                langTransObj:nextProps.langTransObj
             })
+            this.langTransObj=nextProps.langTransObj
         }
-       }
+    }
 
     render(){
         return(
@@ -30,10 +31,12 @@ export default class WorkorderPrintComponent extends React.Component {
                 // "-webkit-print-color-adjust":"exact",
                 margin:"50px auto"
             }}>
-            <table cellpadding="0" cellspacing="0" width="100%" margin="20px">
+            <table cellPadding="0" cellSpacing="0" width="100%" margin="20px">
+            <tbody> 
             <tr>
                 <td>
-                    <table cellpadding="0" cellspacing="0" width="100%" style={{tableLayout: 'fixed'}}>
+                    <table cellPadding="0" cellSpacing="0" width="100%" style={{tableLayout: 'fixed'}}>
+                        <tbody>
                         <tr>
                         {this.state.lists && this.state.lists.make && (
                             <td>
@@ -48,13 +51,13 @@ export default class WorkorderPrintComponent extends React.Component {
                         )}
                             
                             <td>
-                                <p style={{fontSize: "14px", color: "#3c8dbc", margin: '0 0 6px',padding: '0'}}>Inspected By:</p>
+                                <p style={{fontSize: "14px", color: "#3c8dbc", margin: '0 0 6px',padding: '0'}}>{this.langTransObj.labels['INSPECTED_BY']}</p>
                                 <span style={{fontSize: "13px", color: "#212529"}}>
                                     {this.state.lists?.createdBy?.uid ? " " + this.state.lists?.createdBy?.uid : ' N/A'}
                                 </span>
                             </td>
                             <td>
-                                <p style={{fontSize: "14px", color: "#3c8dbc", margin: "0 0 6px",padding: "0"}}>Workshop Name:</p>
+                                <p style={{fontSize: "14px", color: "#3c8dbc", margin: "0 0 6px",padding: "0"}}>{this.langTransObj.labels['WORKSHOP_NAME']}</p>
                                 <span style={{fontSize: "13px", color: "#212529"}}>
                                 {this.state.lists?.loc?.name ? ' ' + this.state.lists.loc?.name : ' N/A'}
                                 </span>
@@ -66,30 +69,31 @@ export default class WorkorderPrintComponent extends React.Component {
                         </tr>
                         <tr>
                             <td style={{paddingTop:"15px"}}>
-                                <p style={{fontSize: "14px", color: "#3c8dbc", margin: "0px 0 6px",padding: "0"}}>Appointment ID:</p>
+                                <p style={{fontSize: "14px", color: "#3c8dbc", margin: "0px 0 6px",padding: "0"}}>{this.langTransObj.labels['APPOINTMENT_ID']}</p>
                                 <span style={{fontSize: "13px", color: "#212529"}}>
                                 {this.state.lists?.appointmentId ? " " + this.state.lists.appointmentId : " N/A"}
                                 </span>
                             </td>
                             <td style={{paddingTop:"15px"}}>
-                                <p style={{fontSize: "14px", color: "#3c8dbc", margin: "0px 0 6px",padding: "0"}}>Inspection Date:</p>
+                                <p style={{fontSize: "14px", color: "#3c8dbc", margin: "0px 0 6px",padding: "0"}}>{this.langTransObj.labels['INSPECTION_DATE']}</p>
                                 <span style={{fontSize: "13px", color: "#212529"}}>
                                 {this.state.lists?.formatedUpdatedAt ? " " + this.state.lists.formatedUpdatedAt : " N/A"}
                                 </span>
                             </td>
                             <td style={{paddingTop:"15px"}}>
-                                <p style={{fontSize: "14px", color: "#3c8dbc", margin: "0px 0 6px",padding: "0"}}>Acceptable Imperfection: </p>
+                                <p style={{fontSize: "14px", color: "#3c8dbc", margin: "0px 0 6px",padding: "0"}}>{this.langTransObj.labels['ACCEPTABLE_IMPERFECTION']}</p>
                                 <span style={{fontSize: "13px", color: "#212529"}}>
                                     {this.state.accImperfection}
                                 </span>
                             </td>
                             <td style={{paddingTop:"15px"}}>
-                                <p style={{fontSize: "14px", color: "#3c8dbc", margin: "0px 0 6px",padding: "0"}}>Non-Acceptable Imperfection:</p>
+                                <p style={{fontSize: "14px", color: "#3c8dbc", margin: "0px 0 6px",padding: "0"}}>{this.langTransObj.labels['NON_ACCEPTABLE_IMPERFECTION']}</p>
                                 <span style={{fontSize: "13px", color: "#212529"}}>
                                 {this.state.nonAccImperfection}    
                                 </span>
                             </td>
                         </tr>
+                        </tbody>
                     </table>
                 </td>
             </tr>
@@ -104,7 +108,8 @@ export default class WorkorderPrintComponent extends React.Component {
             <>
             <tr>
                 <td style={{padding: "40px 0 10px 0"}}>
-                    <table cellpadding="0" cellspacing="0" width="100%">
+                    <table cellPadding="0" cellSpacing="0" width="100%">
+                        <tbody>
                         <tr>
                             <td>{item}</td>
                             <td style={{textAlign: "right"}}>
@@ -113,18 +118,20 @@ export default class WorkorderPrintComponent extends React.Component {
                             </button>
                             </td>
                         </tr>
+                        </tbody>
                     </table>
                 </td>
             </tr>
             <tr>
                 <td style={{paddingTop: "15px", borderTop: "1px solid #99999940"}}>
-                    <table cellpadding="0" cellspacing="0" width="100%"  style={{tableLayout: "fixed"}}>
+                    <table cellPadding="0" cellSpacing="0" width="100%"  style={{tableLayout: "fixed"}}>
+                        <tbody>
                         <tr>
                             <td style={{verticalAlign: "top"}}>
-                                <table cellpadding="0" cellspacing="0" width="100%">
+                                <table cellPadding="0" cellSpacing="0" width="100%">
                                     <tr>
                                         <td style={{fontSize: "16px", color: "#999", margin: "0", padding: "0"}}>
-                                            Unacceptable Imperfections
+                                            {this.langTransObj.labels['UNACCEPTABLE_IMPERFECTION']}
                                         </td>
                                     </tr>
                                     <tr>
@@ -138,7 +145,7 @@ export default class WorkorderPrintComponent extends React.Component {
                                     )}
                                     </tr>
                                     <tr>
-                                        <td style={{fontSize: "16px", color: "#999", margin: "0", padding: "15px 0 0 0"}}>Work to be done</td>
+                                        <td style={{fontSize: "16px", color: "#999", margin: "0", padding: "15px 0 0 0"}}>{this.langTransObj.labels['WORK_TO_BE_DONE']}</td>
                                     </tr>
                                     <tr>
                                         <td style={{fontSize: "15px", color: "#333", margin: "0px 0 0 0", padding: "10px 0 0 0"}}>
@@ -152,7 +159,7 @@ export default class WorkorderPrintComponent extends React.Component {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td style={{fontSize: "16px", color: "#999", margin: "0", padding: "15px 0 10px 0"}}>Estimated labour cost</td>
+                                        <td style={{fontSize: "16px", color: "#999", margin: "0", padding: "15px 0 10px 0"}}>{this.langTransObj.labels['ESTIMATED_LABOUR_COST']}</td>
                                     </tr>
                                     <tr>
                                     <td style={{fontWSize: "15px", color: "#333", margin: "0px 0 0 0", padding: "8px 5px", border:"1px solid #66666669", background: "#9999994a", borderRadius: "5px"}}>
@@ -171,13 +178,13 @@ export default class WorkorderPrintComponent extends React.Component {
                             this.state.lists?.data.estimates[item].parts.map((part,index2)=>{
                             return(<>
                             <td style={{paddingLeft: "10px", verticalAlign: "top"}}>
-                                <p style={{fontSize: "16px", color: "#999", margin: "0", padding: "0"}}>Additional part name</p>
+                                <p style={{fontSize: "16px", color: "#999", margin: "0", padding: "0"}}>{this.langTransObj.labels['ADDITIONAL_PART_NAME']}</p>
                                 <p style={{fontSize: "15px", color: "#333", margin: "10px 0 0 0", padding: "8px 5px", border:"1px solid #66666669", background: "#9999994a", borderRadius: "5px"}}>
                                     {part.name ? part.name : 'N/A'}
                                 </p>
                             </td>
                             <td style={{paddingLeft: "10px", verticalAlign: "top"}}>
-                                <p style={{fontSize: "16px", color: "#999", margin: "0", padding: "0"}}>Additional part cost</p>
+                                <p style={{fontSize: "16px", color: "#999", margin: "0", padding: "0"}}>{this.langTransObj.labels['ADDITIONAL_PART_COST']}</p>
                                 <p style={{fontSize: "15px", color: "#333", margin: "10px 0 0 0", padding: "8px 5px", border:"1px solid #66666669", background: "#9999994a", borderRadius: "5px"}}>
                                 {part.cost || part.cost >= 0 ? part.cost : 'N/A'}
                                 </p>
@@ -185,13 +192,15 @@ export default class WorkorderPrintComponent extends React.Component {
                            </>
                             )})}
                         </tr>
+                        </tbody>
                     </table>
                 </td>
             </tr>
             </>)}
             </>
             )})}
-      </table>
+            </tbody>
+            </table>
             </div>
         )
     }

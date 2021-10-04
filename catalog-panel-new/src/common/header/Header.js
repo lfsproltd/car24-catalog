@@ -178,8 +178,8 @@ class Header extends Component {
             </div>
             <div className="col-lg-2 col-sm-3 col-4">
               <FormControl fullWidth>
-                {/* <InputLabel id="demo-simple-select-label">	
-                    Language	
+                {/* <InputLabel id="demo-simple-select-label">
+                    Language
                   </InputLabel> */}
                 <Select
                   labelId="demo-simple-select-label"
@@ -208,6 +208,7 @@ class Header extends Component {
                                         defaultValue={this.state.vehicleType}
                                     />
                                 </div>  */}
+
             </div>
             <div className="col-lg-10 col-sm-7 col-6">
               <div className="userName">

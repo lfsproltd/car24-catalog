@@ -31,8 +31,20 @@ const EstimateDetailPage = asyncComponent(() =>
   )
 );
 
+const InspectionHistoryPage = asyncComponent(() =>
+  import("../views/inspectionHistory/InspectionListContainer").then(
+    (module) => module.default
+  )
+);
+
 const YardQaListPage = asyncComponent(() =>
   import("../views/yardQaList/YardQaListContainer").then(
+    (module) => module.default
+  )
+);
+
+const inspectionHistoryDetailPage = asyncComponent(() =>
+  import("../views/inspectionHistoryDetail/InspectionDetailsContainer").then(
     (module) => module.default
   )
 );
@@ -54,27 +66,22 @@ const WorkOrderDetailPage = asyncComponent(() =>
     (module) => module.default
   )
 );
-const WorkshopPage = asyncComponent(() =>
-  import("../views/estimate/EstimateListContainer").then(
+
+
+const WorkshopQaListPage = asyncComponent(() =>
+  import("../views/workshopQaList/WorkshopQaListContainer").then(
     (module) => module.default
   )
 );
 
-// const workshopQaContainer = asyncComponent(() =>
-//   import('../views/workshopQa/workshopQaContainer').then(module => module.default)
-// );
+const WorkshopQaDetailsPage = asyncComponent(() =>
+  import("../views/workshopQaDetails/WorkshopQaDetailsContainer").then(
+    (module) => module.default
+  )
+);
 
-// const workshopQaDetailsContainer = asyncComponent(() =>
-//   import('../views/workshopQaDetail/workshopQaDetailsContainer').then(module => module.default)
-// );
 
-// const yardQaContainer = asyncComponent(()=>
-//   import('../views/yardQa/yardQaContainer').then(module=> module.default)
-// );
 
-// const yardQaDetailsContainer = asyncComponent(()=>
-//   import('../views/yardQaDetail/yardQaDetailsContainer').then(module=> module.default)
-// );
 
 // const inspectionHistoryContainer = asyncComponent(()=>
 //   import('../views/inspectionHistory/inspectionHistoryContainer').then(module=> module.default)
@@ -83,18 +90,6 @@ const WorkshopPage = asyncComponent(() =>
 // const inspectionHistoryListingDetailsContainer = asyncComponent(()=>
 //   import('../views/inspectionHistoryDetail/inspectionHistoryDetailContainer').then(module=> module.default)
 // )
-
-// const estimateDetailContainer = asyncComponent(()=>
-//   import('../views/estimateDetails/estimateDetailsContainer').then(module=> module.default)
-// );
-
-// const workorderListingContainer = asyncComponent(()=>
-//   import('../views/workorder/workorderListingContainer').then(module=> module.default)
-// );
-
-// const workorderDetailContainer = asyncComponent(()=>
-//   import('../views/workorderDetail/workorderListingDetailContainer').then(module=> module.default)
-// );
 
 function OktaRoutes() {
   const history = useHistory();
@@ -143,18 +138,26 @@ function OktaRoutes() {
         <Route
           exact
           path="/workshop-qa"
-          component={AdminLayout(WorkshopPage)}
+          component={AdminLayout(WorkshopQaListPage)}
         />
-        {/* <Route exact path="/workshop-qa" component={AdminLayout(workshopQaContainer)} />
-        <Route exact path="/yard-qa" component={AdminLayout(yardQaContainer)} />
-        <Route exact path="/yard-qa/:appointmentId/:version" component={AdminLayout(yardQaDetailsContainer)} />
-        <Route exact path="/inspection-history-qa" component={AdminLayout(inspectionHistoryContainer)} />
-        <Route exact path="/inspection-history-qa/:appointmentId/:version" component={AdminLayout(inspectionHistoryListingDetailsContainer)} />
-        <Route exact path="/workshop-qa/:appointmentId/:version" component={AdminLayout(workshopQaDetailsContainer)} />
-        // <Route exact path="/estimate" component={AdminLayout(estimateListingContainer)} />
-        <Route exact path="/estimate-detail/:appointmentId/:version" component={AdminLayout(estimateDetailContainer)} />        
-        <Route exact path="/work-order" component={AdminLayout(workorderListingContainer)} />
-        <Route exact path="/work-order/:appointmentId/:version" component={AdminLayout(workorderDetailContainer)} />   */}
+
+        <Route
+          exact
+          path="/workshop-qa/:appointmentId/:version" component={AdminLayout(WorkshopQaDetailsPage)}
+        />
+
+
+        <Route
+            exact
+            path="/inspection-history-qa"
+            component={AdminLayout(InspectionHistoryPage)}
+        />
+        <Route
+            exact
+            path="/inspection-history-qa/:appointmentId/:version/:inspectionType?"
+            component={AdminLayout(inspectionHistoryDetailPage)}
+        />
+
         <Route exact path="/unauthorized" component={unAuthComp} />
         <Redirect to="/estimate" />
       </Switch>

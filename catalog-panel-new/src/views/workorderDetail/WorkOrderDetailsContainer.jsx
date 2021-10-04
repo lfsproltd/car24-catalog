@@ -41,7 +41,7 @@ function WorkOrderDetailsContainer(props) {
 
 const mapStateToProps = (state) => {
   return {
-    workOrderDetailsProps: state.inspectionReducer,
+    workOrderDetailsProps: state.inspectionDetailsReducer,
     isProcessing: state.inspectionDetailsReducer.isProcessing,
     showToaster: state.commonReducer.showToaster,
     toasterMessage: state.commonReducer.toasterMessage,

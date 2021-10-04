@@ -4,16 +4,17 @@ import { debounce } from "../../utils/utils";
 import ListComp from "../../common/Layouts/ListView";
 import AssignedToCell from "../../common/Tooltip/assignedToCell";
 
-const YardQaListComponent = (props) => {
+const WorkshopQaListComponent = (props) => {
   const {
-    yardQaListReducerProps,
+    workshopQaReducerProps,
     langTransObj,
     selectedLang,
     SearchItemAction,
     listCall
   } = props;
 
-  const { yardQaList = [], yardQaListingCount  } = yardQaListReducerProps
+
+  const { workshopQaListing = [], workshopQaListingCount  } = workshopQaReducerProps
 
   const [rows, setRows] = useState([]);
   const [headCells, setHeadCells] = useState([]);
@@ -45,7 +46,7 @@ const YardQaListComponent = (props) => {
           id: "loc",
           numeric: false,
           disablePadding: false,
-          label: labels["YARD_NAME"],
+          label: labels["WORKSHOP_NAME"],
         },
         {
           id: "assignedTo",
@@ -53,9 +54,9 @@ const YardQaListComponent = (props) => {
           disablePadding: false,
           label: labels["ASSIGNED_TO"],
         },
-
+        
       ];
-    yardQaList.map((data) => {
+      workshopQaListing.map((data) => {
       const row_data = {
         appointmentId: data["appointmentId"],
         make: data["make"] + " " + data["model"],
@@ -68,13 +69,13 @@ const YardQaListComponent = (props) => {
     });
     setRows(rows);
     setHeadCells(headCells);
-  },[yardQaList]);
+  },[workshopQaListing]);
 
   const createRowData = (TableCell, row, labelId) => {
     return (
       <Fragment>
         <TableCell component="th" id={labelId} scope="row" padding="normal">
-          <Link to={`/yard-qa/${row.appointmentId}/${row.version}`}>
+          <Link to={`/workshop-qa/${row.appointmentId}/${row.version}`}>
             {row.appointmentId}
           </Link>
         </TableCell>
@@ -89,7 +90,6 @@ const YardQaListComponent = (props) => {
       </Fragment>
     );
   };
- 
   const _debouncedFunc = debounce(SearchItemAction, 700);
   const searchItem = (value) => {
     let user = JSON.parse(localStorage.getItem("okta-token-storage"));
@@ -100,7 +100,6 @@ const YardQaListComponent = (props) => {
   const onPageChange = (pageNumber) => {
     listCall({ pageNumber });
   };
-
   return (
     <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
       <input
@@ -111,17 +110,16 @@ const YardQaListComponent = (props) => {
       />
       <ListComp
         rows={rows}
-        totalRecords={yardQaListingCount}
+        totalRecords={workshopQaListingCount}
         headCells={headCells}
         langTransObj={langTransObj}
         createRowData={createRowData}
         orderByField={"appointmentId"}
-        listData={yardQaList}
+        listData={workshopQaListing}
         pageChangeCb={onPageChange}
       />
-    
     </div>
   );
 };
 
-export default YardQaListComponent;
+export default WorkshopQaListComponent;

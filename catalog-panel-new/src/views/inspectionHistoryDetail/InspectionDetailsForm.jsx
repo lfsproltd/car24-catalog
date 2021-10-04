@@ -2,23 +2,21 @@ import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import ClearIcon from "@mui/icons-material/Clear";
 
-import "./estimateDetailsFormStyles.css";
+// import "./estimateDetailsFormStyles.css";
 
-export default function EstimateDetailsForm(props) {
+export default function InspectionDetailsForm(props) {
   const {
     estimateDetails = {},
     data,
     item,
     rowIndex,
     setEstimatesFieldsInitial,
-    estimatesFieldsInitial = {},
+    estimatesFieldsInitial,
     SetEstimateFormDataAction,
     masterData,
     SaveEstimates,
-    langTransObj
   } = props;
   const [isEdit, setIsEdit] = useState(false);
-  const { labels = {} } = langTransObj || {};
   let estimatesFinalData = {
     inspectionType: "CATALOG",
     schemaVersion: "IN_CAR_CATALOG_V1",
@@ -119,7 +117,7 @@ export default function EstimateDetailsForm(props) {
   };
 
   const checkIfAddMoreDisabled = () => {
-    let { parts = [] } = estimatesFieldsInitial?.[item];
+    let { parts } = estimatesFieldsInitial[item];
     for (let i = 0; i < parts.length; i++) {
       let { name, cost } = parts[i];
       if (!name || (!cost && String(cost) !== "0")) {
@@ -129,7 +127,7 @@ export default function EstimateDetailsForm(props) {
   };
 
   const removeIndex = (partIndex) => {
-    let { parts = [] } = estimatesFieldsInitial?.[item];
+    let { parts } = estimatesFieldsInitial[item];
     parts = [...parts];
     parts.splice(partIndex, 1);
     estimatesFieldsInitial[item] = {
@@ -142,7 +140,7 @@ export default function EstimateDetailsForm(props) {
   };
 
   const addMoreParts = () => {
-    let { parts = [] } = estimatesFieldsInitial?.[item];
+    let { parts } = estimatesFieldsInitial[item];
     parts = [...parts];
     parts.push({ cost: "", name: "" });
     estimatesFieldsInitial[item] = {
@@ -153,7 +151,7 @@ export default function EstimateDetailsForm(props) {
   };
 
   const editParts = (e, partIndex) => {
-    let { parts = [] } = estimatesFieldsInitial?.[item];
+    let { parts } = estimatesFieldsInitial[item];
     parts = [...parts];
     const { name, value } = e.target;
     parts[partIndex][name] = value;
@@ -222,8 +220,8 @@ export default function EstimateDetailsForm(props) {
       estimatesFinalData.data.estimates[item]["refurbishmentChoices"] =
         uniqRefurbs;
     }
-    // TODO -
     console.log(estimatesFinalData, props);
+    // debugger; // disabled
     SaveEstimates(estimatesFinalData, estimateDetails.appointmentId);
   };
 
@@ -252,13 +250,12 @@ export default function EstimateDetailsForm(props) {
           </div>
         ))}
         <div className="fields-wrapper">
-        <div className="row">
-            <div className="col-lg-6">
+          <div>
             {/* unacceptable imperfections */}
             {data?.checkpoints[item]?.ok === false &&
               data.checkpoints[item].choices.length && (
                 <div className="col-lg-12 light-label dark-span">
-                  <h6>{labels['UNACCEPTABLE_IMPERFECTIONS']}</h6>
+                  <h6>Unacceptable Imperfections</h6>
                   {data?.checkpoints[item]?.choices.map((choice) => {
                     return !choice.acceptable ? choice.choice + " | " : "";
                   })}
@@ -268,7 +265,7 @@ export default function EstimateDetailsForm(props) {
             {!isEdit ? (
               data?.checkpoints[item]?.refurbishmentChoices.length && (
                 <div className="col-lg-12 light-label dark-span">
-                  <h6 className="work-to-done">{labels['WORK_TO_BE_DONE']}</h6>
+                  <h6 className="work-to-done">Work to be done</h6>
                   <div className="work-to-be-done-list">
                     {data?.checkpoints[item]?.refurbishmentChoices?.map(
                       (choice, index2) => {
@@ -315,7 +312,7 @@ export default function EstimateDetailsForm(props) {
                 />
               </div>
             )}
-            <h6 className="labour-cost-text">{labels['ESTIMATED_LABOUR_COST']}</h6>
+            <h6 className="labour-cost-text">Estimated labour cost</h6>
             <input
               type="number"
               className="form-control"
@@ -341,13 +338,12 @@ export default function EstimateDetailsForm(props) {
             />
           </div>
           {/* additional parts section*/}
-          <div className="col-lg-6">
           <div className="part-cost-wrapper">
             {estimatesFieldsInitial?.[item]?.parts.map(
               (partData, partIndex) => (
                 <div className="part-cost-row">
                   <div>
-                    <h6 className="work-to-done">{labels['ADDITIONAL_PART_NAME']}</h6>
+                    <h6 className="work-to-done">Additional part name</h6>
                     <input
                       type="text"
                       className="form-control"
@@ -361,7 +357,7 @@ export default function EstimateDetailsForm(props) {
                     />
                   </div>
                   <div className="add-part-cost-wrapper">
-                    <h6 className="work-to-done">{labels['ADDITIONAL_PART_COST']}</h6>
+                    <h6 className="work-to-done">Additional part cost</h6>
                     <input
                       type="number"
                       className="form-control"
@@ -394,8 +390,6 @@ export default function EstimateDetailsForm(props) {
               </Button>
             ) : null}
           </div>
-          </div>
-        </div>
         </div>
         <div className="action-buttons">
           <Button
@@ -405,7 +399,7 @@ export default function EstimateDetailsForm(props) {
             className="edit-button"
             variant="contained"
           >
-            {isEdit ? labels['CANCEL'] : labels['EDIT']}
+            {isEdit ? "CANCEL" : "EDIT"}
           </Button>
           {isEdit ? (
             <Button

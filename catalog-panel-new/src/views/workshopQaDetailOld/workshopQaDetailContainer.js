@@ -5,7 +5,7 @@ import loaderImg from "../../assets/img/loader.png";
 import AlertBox from './../../common/showAlert';
 import WorkshopQaDetailsComponent from "./workshopQaDetailsComponent";
 import {getWorkshopListingDetails,approveQualityChecks,getLastInspectionData,getMasterDataQaImageKeys,getInspectionSummary} from "../../store/actions/workshopQaManagement/workshopQaManagement.action";
-class WorkshopQaDetailsContainer extends Component {
+class WorkshopQaDetailContainer extends Component {
     constructor(props) {
         super(props);
     }
@@ -75,4 +75,4 @@ const mapDispatchToProps = {
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(WorkshopQaDetailsContainer);
+)(WorkshopQaDetailContainer);
